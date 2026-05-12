@@ -55,11 +55,10 @@ Rules:
             "AskAi"
 
         },
-
-    body: JSON.stringify({
+body: JSON.stringify({
 
   model:
-    "google/gemma-2-9b-it:free",
+    "openai/gpt-3.5-turbo",
 
   messages: [
 
@@ -81,7 +80,6 @@ Rules:
   max_tokens: 1000
 
 })
-
       }
     );
 
