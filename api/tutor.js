@@ -1,45 +1,50 @@
 export default async function handler(req, res) {
 
+  // Allow only POST
+  if (req.method !== "POST") {
+
+    return res.status(405).json({
+      result: "Method not allowed"
+    });
+
+  }
+
   try {
 
-    if (req.method !== "POST") {
+    const { topic, history } = req.body;
 
-      return res.status(405).json({
-        result: "Method not allowed"
-      });
-
-    }
-
-    const body =
-      typeof req.body === "string"
-        ? JSON.parse(req.body)
-        : req.body;
-
-    const { topic, history } = body;
+    // =========================
+    // SYSTEM PROMPT
+    // =========================
 
     const systemPrompt = `
-You are AskAi, an advanced AI assistant like ChatGPT.
+You are AskAi, a smart AI assistant like ChatGPT.
 
 Rules:
-- Give detailed and accurate answers
-- Use clean formatting
+- Answer naturally
+- Be helpful
+- Give complete answers
 - Use bullet points
-- Explain step-by-step
-- Avoid giant paragraphs
-- Be conversational and smart
-- Help in coding, studies, life, writing, business, AI, and normal chat
-- Behave like a premium AI assistant
+- Use examples
+- Explain clearly
+- Avoid giant boring paragraphs
+- Behave like ChatGPT
 `;
+
+    // =========================
+    // API REQUEST
+    // =========================
 
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
+
         method: "POST",
 
         headers: {
 
           "Authorization":
-            \`Bearer \${process.env.OPENROUTER_API_KEY}\`,
+            "Bearer " + process.env.OPENROUTER_API_KEY,
 
           "Content-Type": "application/json",
 
@@ -53,7 +58,8 @@ Rules:
 
         body: JSON.stringify({
 
-          model: "deepseek/deepseek-chat-v3-0324:free",
+          model:
+            "deepseek/deepseek-chat-v3-0324:free",
 
           messages: [
 
@@ -72,42 +78,57 @@ Rules:
           ],
 
           temperature: 0.7,
-          max_tokens: 1200
+          max_tokens: 1000
 
         })
 
       }
     );
 
+    // =========================
+    // CONVERT RESPONSE
+    // =========================
+
     const data = await response.json();
 
     console.log(data);
 
-    if (!data.choices) {
+    // =========================
+    // ERROR CHECK
+    // =========================
+
+    if (data.error) {
 
       return res.status(500).json({
 
         result:
-          "❌ API Error:\n" +
-          JSON.stringify(data, null, 2)
+          "❌ OpenRouter Error:\n" +
+          data.error.message
 
       });
 
     }
 
+    // =========================
+    // SUCCESS
+    // =========================
+
     return res.status(200).json({
 
       result:
-        data.choices[0].message.content
+        data.choices?.[0]?.message?.content
+        || "No response."
 
     });
 
   } catch (error) {
 
+    console.log(error);
+
     return res.status(500).json({
 
       result:
-        "❌ Server Error: " + error.message
+        "❌ Server Error:\n" + error.message
 
     });
 
