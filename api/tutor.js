@@ -58,7 +58,7 @@ Rules:
 body: JSON.stringify({
 
   model:
-    "openai/gpt-3.5-turbo",
+     "openai/gpt-3.5-turbo",
 
   messages: [
 
