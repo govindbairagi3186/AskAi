@@ -1,28 +1,20 @@
 export default async function handler(req, res) {
-
   try {
 
-    const body = typeof req.body === "string"
-      ? JSON.parse(req.body)
-      : req.body;
+    if (req.method !== "POST") {
+      return res.status(405).json({
+        result: "Method not allowed"
+      });
+    }
 
-    const { topic, history } = body;
-
-    const prompt = `
-You are AskAi.
-
-User message:
-"${topic}"
-
-Respond naturally like ChatGPT.
-`;
+    const { topic, history } = req.body;
 
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
         method: "POST",
         headers: {
-          "Authorization": "Bearer " + process.env.OPENROUTER_API_KEY,
+          "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -31,7 +23,7 @@ Respond naturally like ChatGPT.
             ...(history || []),
             {
               role: "user",
-              content: prompt
+              content: topic
             }
           ]
         })
@@ -40,14 +32,17 @@ Respond naturally like ChatGPT.
 
     const data = await response.json();
 
-    res.status(200).json({
-      result: data.choices?.[0]?.message?.content || "No response"
+    return res.status(200).json({
+      result:
+        data?.choices?.[0]?.message?.content ||
+        "No AI response received."
     });
 
-  } catch (err) {
+  } catch (error) {
 
-    res.status(500).json({
-      result: "Server Error: " + err.message
+    return res.status(500).json({
+      result: error.message
     });
+
   }
 }
