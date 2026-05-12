@@ -56,10 +56,10 @@ Rules:
 
         },
 
-        body: JSON.stringify({
+    body: JSON.stringify({
 
   model:
-    "meta-llama/llama-3.1-8b-instruct:free",
+    "google/gemma-2-9b-it:free",
 
   messages: [
 
