@@ -58,29 +58,29 @@ Rules:
 
         body: JSON.stringify({
 
-          model:
-            "deepseek/deepseek-chat-v3-0324:free",
+  model:
+    "meta-llama/llama-3.1-8b-instruct:free",
 
-          messages: [
+  messages: [
 
-            {
-              role: "system",
-              content: systemPrompt
-            },
+    {
+      role: "system",
+      content: systemPrompt
+    },
 
-            ...(history || []),
+    ...(history || []),
 
-            {
-              role: "user",
-              content: topic
-            }
+    {
+      role: "user",
+      content: topic
+    }
 
-          ],
+  ],
 
-          temperature: 0.7,
-          max_tokens: 1000
+  temperature: 0.7,
+  max_tokens: 1000
 
-        })
+})
 
       }
     );
