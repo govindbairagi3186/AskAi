@@ -3,9 +3,11 @@ export default async function handler(req, res) {
   try {
 
     if (req.method !== "POST") {
+
       return res.status(405).json({
         result: "Method not allowed"
       });
+
     }
 
     const body =
@@ -15,42 +17,19 @@ export default async function handler(req, res) {
 
     const { topic, history } = body;
 
-    // =========================
-    // SYSTEM PROMPT
-    // =========================
-
     const systemPrompt = `
-You are AskAi, a modern AI assistant like ChatGPT.
+You are AskAi, an advanced AI assistant like ChatGPT.
 
 Rules:
-- Give detailed answers
-- Explain clearly
-- Use headings and bullet points
-- Avoid huge boring paragraphs
-- Respond naturally
-- Be smart and conversational
-- Help in studies, coding, life, ideas, writing, and normal chat
-- Give examples whenever useful
-
-Example Style:
-
-🐍 Python is a beginner-friendly programming language.
-
-It is used for:
-- AI
-- Websites
-- Automation
-- Apps
-
-Example:
-\`\`\`python
-print("Hello World")
-\`\`\`
+- Give detailed and accurate answers
+- Use clean formatting
+- Use bullet points
+- Explain step-by-step
+- Avoid giant paragraphs
+- Be conversational and smart
+- Help in coding, studies, life, writing, business, AI, and normal chat
+- Behave like a premium AI assistant
 `;
-
-    // =========================
-    // API CALL
-    // =========================
 
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
@@ -58,8 +37,9 @@ print("Hello World")
         method: "POST",
 
         headers: {
+
           "Authorization":
-            `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            \`Bearer \${process.env.OPENROUTER_API_KEY}\`,
 
           "Content-Type": "application/json",
 
@@ -68,11 +48,12 @@ print("Hello World")
 
           "X-Title":
             "AskAi"
+
         },
 
         body: JSON.stringify({
 
-          model: "mistralai/mistral-7b-instruct:free",
+          model: "deepseek/deepseek-chat-v3-0324:free",
 
           messages: [
 
@@ -91,24 +72,16 @@ print("Hello World")
           ],
 
           temperature: 0.7,
-          max_tokens: 1000
+          max_tokens: 1200
 
         })
 
       }
     );
 
-    // =========================
-    // RESPONSE
-    // =========================
-
     const data = await response.json();
 
-    console.log("OPENROUTER RESPONSE:", data);
-
-    // =========================
-    // ERROR CHECK
-    // =========================
+    console.log(data);
 
     if (!data.choices) {
 
@@ -122,10 +95,6 @@ print("Hello World")
 
     }
 
-    // =========================
-    // SUCCESS
-    // =========================
-
     return res.status(200).json({
 
       result:
@@ -134,8 +103,6 @@ print("Hello World")
     });
 
   } catch (error) {
-
-    console.log(error);
 
     return res.status(500).json({
 
