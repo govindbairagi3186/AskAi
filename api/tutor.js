@@ -3,70 +3,76 @@ export default async function handler(req, res) {
   try {
 
     if (req.method !== "POST") {
-
       return res.status(405).json({
         result: "Method not allowed"
       });
-
     }
 
-    const { topic, history } = req.body;
+    const body =
+      typeof req.body === "string"
+        ? JSON.parse(req.body)
+        : req.body;
+
+    const { topic, history } = body;
+
+    // =========================
+    // SYSTEM PROMPT
+    // =========================
 
     const systemPrompt = `
 You are AskAi, a modern AI assistant like ChatGPT.
 
 Rules:
+- Give detailed answers
+- Explain clearly
+- Use headings and bullet points
+- Avoid huge boring paragraphs
+- Respond naturally
+- Be smart and conversational
+- Help in studies, coding, life, ideas, writing, and normal chat
+- Give examples whenever useful
 
-- Answer naturally like ChatGPT
-- Give detailed helpful responses
-- Use proper formatting
-- Use headings when needed
-- Use bullet points
-- Explain deeply but clearly
-- Avoid giant boring paragraphs
-- Make answers beautiful and engaging
-- For coding → give examples
-- For study → explain step-by-step
-- For casual chat → talk naturally
-- Behave like a real AI assistant
+Example Style:
 
-Example style:
+🐍 Python is a beginner-friendly programming language.
 
-🐍 What is Python?
-
-Python is a powerful programming language used for:
-
-- Web Development
-- AI & Machine Learning
+It is used for:
+- AI
+- Websites
 - Automation
-- Data Science
+- Apps
 
 Example:
 \`\`\`python
 print("Hello World")
 \`\`\`
-
-Python is beginner-friendly and widely used.
 `;
+
+    // =========================
+    // API CALL
+    // =========================
 
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
-
         method: "POST",
 
         headers: {
-
           "Authorization":
             `Bearer ${process.env.OPENROUTER_API_KEY}`,
 
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
 
+          "HTTP-Referer":
+            "https://ask-ai-phi-nine.vercel.app",
+
+          "X-Title":
+            "AskAi"
         },
 
         body: JSON.stringify({
 
-          model: "deepseek/deepseek-chat:free",
+          model: "mistralai/mistral-7b-instruct:free",
 
           messages: [
 
@@ -82,27 +88,43 @@ Python is beginner-friendly and widely used.
               content: topic
             }
 
-          ]
+          ],
+
+          temperature: 0.7,
+          max_tokens: 1000
 
         })
 
       }
     );
 
+    // =========================
+    // RESPONSE
+    // =========================
+
     const data = await response.json();
 
-    console.log(data);
+    console.log("OPENROUTER RESPONSE:", data);
+
+    // =========================
+    // ERROR CHECK
+    // =========================
 
     if (!data.choices) {
 
       return res.status(500).json({
 
         result:
-          "❌ AI Error. Check API key or model."
+          "❌ API Error:\n" +
+          JSON.stringify(data, null, 2)
 
       });
 
     }
+
+    // =========================
+    // SUCCESS
+    // =========================
 
     return res.status(200).json({
 
@@ -112,6 +134,8 @@ Python is beginner-friendly and widely used.
     });
 
   } catch (error) {
+
+    console.log(error);
 
     return res.status(500).json({
 
