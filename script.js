@@ -74,34 +74,68 @@ if (SpeechRecognition && voiceBtn) {
 
 }
 
-// IMAGE
+
+
+// IMAGE UPLOAD
 if (imageInput) {
 
   imageInput.addEventListener(
     "change",
     (e) => {
 
-      const file =
-        e.target.files[0];
+      const file = e.target.files[0];
 
       if (!file) return;
 
-      const reader =
-        new FileReader();
+      const reader = new FileReader();
 
       reader.onload = () => {
 
-        const img =
-          document.createElement("img");
+        // USER IMAGE MESSAGE
+        const msg =
+          document.createElement("div");
 
-        img.src = reader.result;
+        msg.className =
+          "message user";
 
-        img.className =
-          "uploaded-image";
+        msg.innerHTML = `
 
-        chatBox.appendChild(img);
+          <div class="bubble">
+
+            <img
+              src="${reader.result}"
+              class="uploaded-image"
+            />
+
+          </div>
+
+          <div class="avatar user-avatar">
+            G
+          </div>
+
+        `;
+
+        chatBox.appendChild(msg);
 
         scrollBottom();
+
+        // AI RESPONSE
+        setTimeout(() => {
+
+          addAIMessage(`
+# 🖼️ Image Uploaded Successfully
+
+Your image was uploaded.
+
+Future upgrades can include:
+
+- 🔍 AI image analysis
+- 📝 OCR text extraction
+- 📷 Object detection
+- 🤖 Vision AI support
+          `);
+
+        }, 500);
 
       };
 
