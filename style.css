@@ -121,6 +121,7 @@ body{
   color:black;
 }
 
+/* BUBBLE */
 .bubble{
   max-width:75%;
   padding:16px 18px;
@@ -129,6 +130,7 @@ body{
   font-size:15px;
   white-space:pre-wrap;
   transition:0.2s;
+  overflow-wrap:break-word;
 }
 
 .bubble:hover{
@@ -142,6 +144,22 @@ body{
 .ai .bubble{
   background:#2a2a2a;
   border:1px solid #3a3a3a;
+}
+
+/* HEADINGS */
+h1{
+  font-size:26px;
+  margin-bottom:12px;
+}
+
+h2{
+  font-size:22px;
+  margin-bottom:10px;
+}
+
+h3{
+  font-size:18px;
+  margin-bottom:8px;
 }
 
 /* CODE */
@@ -169,6 +187,7 @@ code{
   border-radius:18px;
   display:flex;
   align-items:flex-end;
+  gap:10px;
   padding:12px;
 }
 
@@ -182,8 +201,35 @@ textarea{
   font-size:16px;
   padding:10px;
   max-height:200px;
+  line-height:1.6;
 }
 
+textarea::placeholder{
+  color:#9ca3af;
+}
+
+/* ICON BUTTONS */
+.icon-btn{
+  width:42px;
+  height:42px;
+  border:none;
+  border-radius:50%;
+  background:#3a3a3a;
+  color:white;
+  cursor:pointer;
+  font-size:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:0.2s;
+}
+
+.icon-btn:hover{
+  background:#4a4a4a;
+  transform:scale(1.05);
+}
+
+/* SEND BUTTON */
 #sendBtn{
   width:46px;
   height:46px;
@@ -194,6 +240,7 @@ textarea{
   font-size:20px;
   cursor:pointer;
   transition:0.2s;
+  flex-shrink:0;
 }
 
 #sendBtn:hover{
@@ -222,6 +269,16 @@ textarea{
   animation-delay:0.4s;
 }
 
+/* IMAGE */
+.uploaded-image{
+  max-width:300px;
+  border-radius:16px;
+  margin-left:auto;
+  margin-right:20px;
+  margin-top:10px;
+  border:1px solid #3a3a3a;
+}
+
 /* SCROLLBAR */
 ::-webkit-scrollbar{
   width:8px;
@@ -232,7 +289,7 @@ textarea{
   border-radius:10px;
 }
 
-/* ANIMATION */
+/* ANIMATIONS */
 @keyframes bounce{
 
   0%,80%,100%{
@@ -274,6 +331,19 @@ textarea{
 
   .bubble{
     max-width:90%;
+  }
+
+  .topbar{
+    font-size:16px;
+  }
+
+  .input-wrapper{
+    padding:14px;
+  }
+
+  .input-box{
+    gap:6px;
+    padding:10px;
   }
 
 }
