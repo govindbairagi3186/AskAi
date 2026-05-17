@@ -11,8 +11,6 @@ const topicInput =
 const voiceBtn =
   document.getElementById("voiceBtn");
 
-const imageInput =
-  document.getElementById("imageInput");
 
 // =========================
 // HISTORY
@@ -102,77 +100,7 @@ if (SpeechRecognition && voiceBtn) {
 
 }
 
-// =========================
-// IMAGE UPLOAD
-// =========================
-if (imageInput) {
 
-  imageInput.addEventListener(
-    "change",
-    (e) => {
-
-      const file =
-        e.target.files[0];
-
-      if (!file) return;
-
-      const reader =
-        new FileReader();
-
-      reader.onload = () => {
-
-        // USER IMAGE MESSAGE
-        const msg =
-          document.createElement("div");
-
-        msg.className =
-          "message user";
-
-        msg.innerHTML = `
-
-          <div class="bubble">
-
-            <img
-              src="${reader.result}"
-              class="uploaded-image"
-            />
-
-          </div>
-
-          <div class="avatar user-avatar">
-            G
-          </div>
-
-        `;
-
-        chatBox.appendChild(msg);
-
-        scrollBottom();
-
-        setTimeout(() => {
-
-          addAIMessage(`
-# 🖼️ Image Uploaded Successfully
-
-Your image was uploaded.
-
-Future upgrades:
-- AI image analysis
-- OCR text extraction
-- Object detection
-- Vision AI
-          `);
-
-        }, 500);
-
-      };
-
-      reader.readAsDataURL(file);
-
-    }
-  );
-
-}
 
 // =========================
 // NEW CHAT
