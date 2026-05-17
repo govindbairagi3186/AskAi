@@ -1,18 +1,26 @@
 // =========================
-// AskAi - script.js
+// AskAi - FINAL script.js
 // =========================
 
 const chatBox = document.getElementById("chatBox");
 const topicInput = document.getElementById("topic");
+const voiceBtn = document.getElementById("voiceBtn");
+const imageInput = document.getElementById("imageInput");
 
-let history = [];
+let history = JSON.parse(
+  localStorage.getItem("askai_history") || "[]"
+);
 
 // =========================
-// AUTO RESIZE INPUT
+// AUTO RESIZE
 // =========================
 topicInput?.addEventListener("input", () => {
+
   topicInput.style.height = "auto";
-  topicInput.style.height = topicInput.scrollHeight + "px";
+
+  topicInput.style.height =
+    topicInput.scrollHeight + "px";
+
 });
 
 // =========================
@@ -21,11 +29,95 @@ topicInput?.addEventListener("input", () => {
 topicInput?.addEventListener("keydown", (e) => {
 
   if (e.key === "Enter" && !e.shiftKey) {
+
     e.preventDefault();
+
     learnTopic();
+
   }
 
 });
+
+// =========================
+// VOICE INPUT
+// =========================
+const SpeechRecognition =
+  window.SpeechRecognition ||
+  window.webkitSpeechRecognition;
+
+if (SpeechRecognition && voiceBtn) {
+
+  const recognition =
+    new SpeechRecognition();
+
+  recognition.continuous = false;
+
+  recognition.lang = "en-US";
+
+  voiceBtn.onclick = () => {
+
+    recognition.start();
+
+    voiceBtn.innerText = "🎙️";
+
+  };
+
+  recognition.onresult = (event) => {
+
+    const transcript =
+      event.results[0][0].transcript;
+
+    topicInput.value = transcript;
+
+    voiceBtn.innerText = "🎤";
+
+  };
+
+  recognition.onerror = () => {
+
+    voiceBtn.innerText = "🎤";
+
+  };
+
+}
+
+// =========================
+// IMAGE UPLOAD
+// =========================
+if (imageInput) {
+
+  imageInput.addEventListener(
+    "change",
+    async (e) => {
+
+      const file = e.target.files[0];
+
+      if (!file) return;
+
+      addUserMessage("🖼️ Image uploaded");
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+
+        const img = document.createElement("img");
+
+        img.src = reader.result;
+
+        img.className = "uploaded-image";
+
+        chatBox.appendChild(img);
+
+        scrollBottom();
+
+      };
+
+      reader.readAsDataURL(file);
+
+    }
+  );
+
+}
 
 // =========================
 // NEW CHAT
@@ -34,20 +126,22 @@ function newChat() {
 
   history = [];
 
+  localStorage.removeItem("askai_history");
+
   chatBox.innerHTML = "";
 
   addAIMessage(`
 # 👋 Welcome to AskAi
 
-I can help you with:
+I can help with:
 
-- 📚 Study & Notes
+- 📚 Study
 - 💻 Coding
-- 🤖 AI Tools
-- ✈️ Travel
-- 🧠 Ideas
-- 📄 Writing
+- ✍️ Writing
+- 🤖 AI
+- 📈 Business Ideas
 - 🎯 Career Guidance
+- 🌍 General Questions
 - 😄 Casual Chat
 
 Ask me anything.
@@ -65,18 +159,21 @@ function addUserMessage(text) {
   msg.className = "message user";
 
   msg.innerHTML = `
-    <div class="avatar user-avatar">
-      G
-    </div>
 
     <div class="bubble">
       ${formatText(text)}
     </div>
+
+    <div class="avatar user-avatar">
+      G
+    </div>
+
   `;
 
   chatBox.appendChild(msg);
 
   scrollBottom();
+
 }
 
 // =========================
@@ -89,20 +186,27 @@ function addAIMessage(text) {
   msg.className = "message ai";
 
   msg.innerHTML = `
+
     <div class="avatar ai-avatar">
       AI
     </div>
 
     <div class="bubble ai-text"></div>
+
   `;
 
   chatBox.appendChild(msg);
 
-  const bubble = msg.querySelector(".ai-text");
+  const bubble =
+    msg.querySelector(".ai-text");
 
-  typeText(bubble, formatText(text));
+  typeText(
+    bubble,
+    formatText(text)
+  );
 
   scrollBottom();
+
 }
 
 // =========================
@@ -112,13 +216,14 @@ function typeText(el, text) {
 
   let i = 0;
 
-  const speed = 4;
+  const speed = 3;
 
   function typing() {
 
     if (i < text.length) {
 
-      el.innerHTML = text.slice(0, i) + "▌";
+      el.innerHTML =
+        text.slice(0, i) + "▌";
 
       i++;
 
@@ -135,10 +240,11 @@ function typeText(el, text) {
   }
 
   typing();
+
 }
 
 // =========================
-// FORMAT OUTPUT
+// FORMAT TEXT
 // =========================
 function formatText(text) {
 
@@ -151,8 +257,6 @@ function formatText(text) {
       /```([\s\S]*?)```/g,
       "<pre><code>$1</code></pre>"
     )
-
-    .replace(/\n/g, "<br>")
 
     .replace(
       /^# (.*$)/gim,
@@ -172,7 +276,10 @@ function formatText(text) {
     .replace(
       /\*\*(.*?)\*\*/g,
       "<b>$1</b>"
-    );
+    )
+
+    .replace(/\n/g, "<br>");
+
 }
 
 // =========================
@@ -180,13 +287,16 @@ function formatText(text) {
 // =========================
 function showThinking() {
 
-  const thinking = document.createElement("div");
+  const thinking =
+    document.createElement("div");
 
-  thinking.className = "message ai thinking-box";
+  thinking.className =
+    "message ai thinking-box";
 
   thinking.id = "thinking";
 
   thinking.innerHTML = `
+
     <div class="avatar ai-avatar">
       AI
     </div>
@@ -200,11 +310,13 @@ function showThinking() {
       </div>
 
     </div>
+
   `;
 
   chatBox.appendChild(thinking);
 
   scrollBottom();
+
 }
 
 // =========================
@@ -212,9 +324,48 @@ function showThinking() {
 // =========================
 function removeThinking() {
 
-  const t = document.getElementById("thinking");
+  const t =
+    document.getElementById("thinking");
 
   if (t) t.remove();
+
+}
+
+// =========================
+// SAVE MEMORY
+// =========================
+function saveMemory(text) {
+
+  let memory = JSON.parse(
+    localStorage.getItem("askai_memory")
+    || "[]"
+  );
+
+  memory.push(text);
+
+  if (memory.length > 20) {
+
+    memory.shift();
+
+  }
+
+  localStorage.setItem(
+    "askai_memory",
+    JSON.stringify(memory)
+  );
+
+}
+
+// =========================
+// GET MEMORY
+// =========================
+function getMemory() {
+
+  return JSON.parse(
+    localStorage.getItem("askai_memory")
+    || "[]"
+  );
+
 }
 
 // =========================
@@ -222,43 +373,55 @@ function removeThinking() {
 // =========================
 async function learnTopic() {
 
-  const text = topicInput.value.trim();
+  const text =
+    topicInput.value.trim();
 
   if (!text) return;
 
   addUserMessage(text);
 
+  saveMemory(text);
+
   topicInput.value = "";
 
-  topicInput.style.height = "auto";
+  topicInput.style.height =
+    "auto";
 
   showThinking();
 
   try {
 
-    const response = await fetch("/api/tutor", {
+    const response =
+      await fetch("/api/tutor", {
 
-      method: "POST",
+        method: "POST",
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+        headers: {
+          "Content-Type":
+            "application/json"
+        },
 
-      body: JSON.stringify({
+        body: JSON.stringify({
 
-        topic: text,
+          topic: text,
 
-        history
+          history,
 
-      })
+          memory: getMemory()
 
-    });
+        })
 
-    const data = await response.json();
+      });
+
+    const data =
+      await response.json();
 
     removeThinking();
 
-    addAIMessage(data.result);
+    addAIMessage(
+      data.result ||
+      "No response."
+    );
 
     history.push({
       role: "user",
@@ -269,6 +432,11 @@ async function learnTopic() {
       role: "assistant",
       content: data.result
     });
+
+    localStorage.setItem(
+      "askai_history",
+      JSON.stringify(history)
+    );
 
   } catch (error) {
 
@@ -282,6 +450,8 @@ Something went wrong.
 Please try again.
     `);
 
+    console.log(error);
+
   }
 
 }
@@ -291,11 +461,43 @@ Please try again.
 // =========================
 function scrollBottom() {
 
-  chatBox.scrollTop = chatBox.scrollHeight;
+  chatBox.scrollTop =
+    chatBox.scrollHeight;
+
+}
+
+// =========================
+// LOAD OLD CHAT
+// =========================
+function loadHistory() {
+
+  if (!history.length) {
+
+    newChat();
+
+    return;
+
+  }
+
+  chatBox.innerHTML = "";
+
+  history.forEach((msg) => {
+
+    if (msg.role === "user") {
+
+      addUserMessage(msg.content);
+
+    } else {
+
+      addAIMessage(msg.content);
+
+    }
+
+  });
 
 }
 
 // =========================
 // START
 // =========================
-newChat();
+loadHistory();
