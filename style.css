@@ -241,14 +241,6 @@ textarea::placeholder{
   animation-delay:.4s;
 }
 
-/* IMAGE */
-.uploaded-image{
-  max-width:300px;
-  border-radius:16px;
-  border:1px solid #3a3a3a;
-  margin-left:auto;
-}
-
 /* SCROLLBAR */
 ::-webkit-scrollbar{
   width:8px;
