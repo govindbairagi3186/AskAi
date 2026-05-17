@@ -1,13 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>AskAi</title>
 
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css" />
 
 </head>
 
@@ -24,14 +29,17 @@
         ✨ AskAi 👾
       </div>
 
-      <button class="new-chat-btn" onclick="newChat()">
+      <button
+        class="new-chat-btn"
+        onclick="newChat()"
+      >
         + New Chat
       </button>
 
     </div>
 
     <div class="sidebar-footer">
-      Made with ❤️ by GOVIND VAISHNAV🧿
+      Made with ❤️ by GOVIND VAISHNAV 🧿
     </div>
 
   </aside>
@@ -39,27 +47,57 @@
   <!-- MAIN -->
   <main class="main">
 
-    <!-- TOP -->
+    <!-- TOPBAR -->
     <div class="topbar">
       AskAi
     </div>
 
     <!-- CHAT -->
-    <div id="chatBox" class="chat-box"></div>
+    <div
+      id="chatBox"
+      class="chat-box"
+    ></div>
 
-    <!-- INPUT -->
+    <!-- INPUT AREA -->
     <div class="input-wrapper">
 
       <div class="input-box">
 
+        <!-- TEXTAREA -->
         <textarea
           id="topic"
           rows="1"
           placeholder="Message AskAi..."
         ></textarea>
 
-        <button id="sendBtn" onclick="learnTopic()">
-          <button id="voiceBtn">🎤</button>
+        <!-- IMAGE -->
+        <label
+          for="imageInput"
+          class="icon-btn"
+        >
+          🖼️
+        </label>
+
+        <input
+          type="file"
+          id="imageInput"
+          accept="image/*"
+          hidden
+        />
+
+        <!-- VOICE -->
+        <button
+          id="voiceBtn"
+          class="icon-btn"
+        >
+          🎤
+        </button>
+
+        <!-- SEND -->
+        <button
+          id="sendBtn"
+          onclick="learnTopic()"
+        >
           ↑
         </button>
 
