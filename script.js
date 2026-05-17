@@ -40,6 +40,9 @@ topicInput?.addEventListener(
 // =========================
 // ENTER TO SEND
 // =========================
+// =========================
+// ENTER TO SEND
+// =========================
 topicInput?.addEventListener(
   "keydown",
   (e) => {
@@ -57,7 +60,6 @@ topicInput?.addEventListener(
 
   }
 );
-
 // =========================
 // VOICE INPUT
 // =========================
