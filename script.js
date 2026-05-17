@@ -1,47 +1,78 @@
 // =========================
-// AskAi - FINAL script.js
+// AskAi FINAL script.js
 // =========================
 
-const chatBox = document.getElementById("chatBox");
-const topicInput = document.getElementById("topic");
-const voiceBtn = document.getElementById("voiceBtn");
-const imageInput = document.getElementById("imageInput");
+const chatBox =
+  document.getElementById("chatBox");
 
+const topicInput =
+  document.getElementById("topic");
+
+const voiceBtn =
+  document.getElementById("voiceBtn");
+
+const imageInput =
+  document.getElementById("imageInput");
+
+// =========================
+// LOAD HISTORY
+// =========================
 let history = JSON.parse(
-  localStorage.getItem("askai_history") || "[]"
+
+  localStorage.getItem(
+    "askai_history"
+  ) || "[]"
+
 );
 
 // =========================
 // AUTO RESIZE
 // =========================
-topicInput?.addEventListener("input", () => {
+topicInput?.addEventListener(
 
-  topicInput.style.height = "auto";
+  "input",
 
-  topicInput.style.height =
-    topicInput.scrollHeight + "px";
+  () => {
 
-});
+    topicInput.style.height =
+      "auto";
+
+    topicInput.style.height =
+      topicInput.scrollHeight + "px";
+
+  }
+
+);
 
 // =========================
 // ENTER TO SEND
 // =========================
-topicInput?.addEventListener("keydown", (e) => {
+topicInput?.addEventListener(
 
-  if (e.key === "Enter" && !e.shiftKey) {
+  "keydown",
 
-    e.preventDefault();
+  (e) => {
 
-    learnTopic();
+    if (
+      e.key === "Enter" &&
+      !e.shiftKey
+    ) {
+
+      e.preventDefault();
+
+      learnTopic();
+
+    }
 
   }
 
-});
+);
 
 // =========================
 // VOICE INPUT
 // =========================
 const SpeechRecognition =
+
   window.SpeechRecognition ||
   window.webkitSpeechRecognition;
 
@@ -50,9 +81,9 @@ if (SpeechRecognition && voiceBtn) {
   const recognition =
     new SpeechRecognition();
 
-  recognition.continuous = false;
-
   recognition.lang = "en-US";
+
+  recognition.continuous = false;
 
   voiceBtn.onclick = () => {
 
@@ -62,12 +93,10 @@ if (SpeechRecognition && voiceBtn) {
 
   };
 
-  recognition.onresult = (event) => {
+  recognition.onresult = (e) => {
 
-    const transcript =
-      event.results[0][0].transcript;
-
-    topicInput.value = transcript;
+    topicInput.value =
+      e.results[0][0].transcript;
 
     voiceBtn.innerText = "🎤";
 
@@ -87,34 +116,51 @@ if (SpeechRecognition && voiceBtn) {
 if (imageInput) {
 
   imageInput.addEventListener(
+
     "change",
+
     async (e) => {
 
-      const file = e.target.files[0];
+      const file =
+        e.target.files[0];
 
       if (!file) return;
 
-      addUserMessage("🖼️ Image uploaded");
-
-      const reader = new FileReader();
+      const reader =
+        new FileReader();
 
       reader.onload = () => {
 
-        const img = document.createElement("img");
+        const image =
+          document.createElement("img");
 
-        img.src = reader.result;
+        image.src =
+          reader.result;
 
-        img.className = "uploaded-image";
+        image.className =
+          "uploaded-image";
 
-        chatBox.appendChild(img);
+        chatBox.appendChild(image);
 
         scrollBottom();
+
+        addAIMessage(`
+# 🖼️ Image Uploaded
+
+Image support added successfully.
+
+Future upgrade:
+- AI image understanding
+- OCR text extraction
+- Object detection
+        `);
 
       };
 
       reader.readAsDataURL(file);
 
     }
+
   );
 
 }
@@ -126,7 +172,9 @@ function newChat() {
 
   history = [];
 
-  localStorage.removeItem("askai_history");
+  localStorage.removeItem(
+    "askai_history"
+  );
 
   chatBox.innerHTML = "";
 
@@ -137,12 +185,11 @@ I can help with:
 
 - 📚 Study
 - 💻 Coding
-- ✍️ Writing
 - 🤖 AI
+- 🌍 General Questions
+- ✍️ Writing
 - 📈 Business Ideas
 - 🎯 Career Guidance
-- 🌍 General Questions
-- 😄 Casual Chat
 
 Ask me anything.
   `);
@@ -154,9 +201,11 @@ Ask me anything.
 // =========================
 function addUserMessage(text) {
 
-  const msg = document.createElement("div");
+  const msg =
+    document.createElement("div");
 
-  msg.className = "message user";
+  msg.className =
+    "message user";
 
   msg.innerHTML = `
 
@@ -181,9 +230,11 @@ function addUserMessage(text) {
 // =========================
 function addAIMessage(text) {
 
-  const msg = document.createElement("div");
+  const msg =
+    document.createElement("div");
 
-  msg.className = "message ai";
+  msg.className =
+    "message ai";
 
   msg.innerHTML = `
 
@@ -229,7 +280,10 @@ function typeText(el, text) {
 
       scrollBottom();
 
-      setTimeout(typing, speed);
+      setTimeout(
+        typing,
+        speed
+      );
 
     } else {
 
@@ -254,31 +308,49 @@ function formatText(text) {
     .replace(/>/g, "&gt;")
 
     .replace(
-      /```([\s\S]*?)```/g,
+
+      /```([\\s\\S]*?)```/g,
+
       "<pre><code>$1</code></pre>"
+
     )
 
     .replace(
+
       /^# (.*$)/gim,
+
       "<h1>$1</h1>"
+
     )
 
     .replace(
+
       /^## (.*$)/gim,
+
       "<h2>$1</h2>"
+
     )
 
     .replace(
+
       /^### (.*$)/gim,
+
       "<h3>$1</h3>"
+
     )
 
     .replace(
-      /\*\*(.*?)\*\*/g,
+
+      /\\*\\*(.*?)\\*\\*/g,
+
       "<b>$1</b>"
+
     )
 
-    .replace(/\n/g, "<br>");
+    .replace(
+      /\\n/g,
+      "<br>"
+    );
 
 }
 
@@ -290,10 +362,10 @@ function showThinking() {
   const thinking =
     document.createElement("div");
 
-  thinking.className =
-    "message ai thinking-box";
-
   thinking.id = "thinking";
+
+  thinking.className =
+    "message ai";
 
   thinking.innerHTML = `
 
@@ -313,7 +385,9 @@ function showThinking() {
 
   `;
 
-  chatBox.appendChild(thinking);
+  chatBox.appendChild(
+    thinking
+  );
 
   scrollBottom();
 
@@ -325,33 +399,41 @@ function showThinking() {
 function removeThinking() {
 
   const t =
-    document.getElementById("thinking");
+    document.getElementById(
+      "thinking"
+    );
 
   if (t) t.remove();
 
 }
 
 // =========================
-// SAVE MEMORY
+// AI MEMORY
 // =========================
 function saveMemory(text) {
 
   let memory = JSON.parse(
-    localStorage.getItem("askai_memory")
-    || "[]"
+
+    localStorage.getItem(
+      "askai_memory"
+    ) || "[]"
+
   );
 
   memory.push(text);
 
-  if (memory.length > 20) {
+  if (memory.length > 30) {
 
     memory.shift();
 
   }
 
   localStorage.setItem(
+
     "askai_memory",
+
     JSON.stringify(memory)
+
   );
 
 }
@@ -362,8 +444,11 @@ function saveMemory(text) {
 function getMemory() {
 
   return JSON.parse(
-    localStorage.getItem("askai_memory")
-    || "[]"
+
+    localStorage.getItem(
+      "askai_memory"
+    ) || "[]"
+
   );
 
 }
@@ -392,26 +477,34 @@ async function learnTopic() {
   try {
 
     const response =
-      await fetch("/api/tutor", {
+      await fetch(
 
-        method: "POST",
+        "/api/tutor",
 
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
+        {
 
-        body: JSON.stringify({
+          method: "POST",
 
-          topic: text,
+          headers: {
 
-          history,
+            "Content-Type":
+              "application/json"
 
-          memory: getMemory()
+          },
 
-        })
+          body: JSON.stringify({
 
-      });
+            topic: text,
+
+            history,
+
+            memory: getMemory()
+
+          })
+
+        }
+
+      );
 
     const data =
       await response.json();
@@ -419,23 +512,32 @@ async function learnTopic() {
     removeThinking();
 
     addAIMessage(
-      data.result ||
-      "No response."
+      data.result
     );
 
     history.push({
+
       role: "user",
+
       content: text
+
     });
 
     history.push({
+
       role: "assistant",
+
       content: data.result
+
     });
 
+    // SAVE CHAT DATABASE
     localStorage.setItem(
+
       "askai_history",
+
       JSON.stringify(history)
+
     );
 
   } catch (error) {
@@ -467,7 +569,7 @@ function scrollBottom() {
 }
 
 // =========================
-// LOAD OLD CHAT
+// LOAD OLD CHATS
 // =========================
 function loadHistory() {
 
@@ -483,13 +585,19 @@ function loadHistory() {
 
   history.forEach((msg) => {
 
-    if (msg.role === "user") {
+    if (
+      msg.role === "user"
+    ) {
 
-      addUserMessage(msg.content);
+      addUserMessage(
+        msg.content
+      );
 
     } else {
 
-      addAIMessage(msg.content);
+      addAIMessage(
+        msg.content
+      );
 
     }
 
