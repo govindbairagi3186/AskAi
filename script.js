@@ -1,3 +1,7 @@
+// =========================
+// AskAi FINAL script.js
+// =========================
+
 const chatBox =
   document.getElementById("chatBox");
 
@@ -10,21 +14,32 @@ const voiceBtn =
 const imageInput =
   document.getElementById("imageInput");
 
+// =========================
+// HISTORY
+// =========================
 let history = JSON.parse(
   localStorage.getItem("askai_history") || "[]"
 );
 
+// =========================
 // AUTO RESIZE
-topicInput?.addEventListener("input", () => {
+// =========================
+topicInput?.addEventListener(
+  "input",
+  () => {
 
-  topicInput.style.height = "auto";
+    topicInput.style.height =
+      "auto";
 
-  topicInput.style.height =
-    topicInput.scrollHeight + "px";
+    topicInput.style.height =
+      topicInput.scrollHeight + "px";
 
-});
+  }
+);
 
+// =========================
 // ENTER TO SEND
+// =========================
 topicInput?.addEventListener(
   "keydown",
   (e) => {
@@ -43,8 +58,11 @@ topicInput?.addEventListener(
   }
 );
 
-// VOICE
+// =========================
+// VOICE INPUT
+// =========================
 const SpeechRecognition =
+
   window.SpeechRecognition ||
   window.webkitSpeechRecognition;
 
@@ -54,6 +72,8 @@ if (SpeechRecognition && voiceBtn) {
     new SpeechRecognition();
 
   recognition.lang = "en-US";
+
+  recognition.continuous = false;
 
   voiceBtn.onclick = () => {
 
@@ -72,22 +92,30 @@ if (SpeechRecognition && voiceBtn) {
 
   };
 
+  recognition.onerror = () => {
+
+    voiceBtn.innerText = "🎤";
+
+  };
+
 }
 
-
-
+// =========================
 // IMAGE UPLOAD
+// =========================
 if (imageInput) {
 
   imageInput.addEventListener(
     "change",
     (e) => {
 
-      const file = e.target.files[0];
+      const file =
+        e.target.files[0];
 
       if (!file) return;
 
-      const reader = new FileReader();
+      const reader =
+        new FileReader();
 
       reader.onload = () => {
 
@@ -119,7 +147,6 @@ if (imageInput) {
 
         scrollBottom();
 
-        // AI RESPONSE
         setTimeout(() => {
 
           addAIMessage(`
@@ -127,12 +154,11 @@ if (imageInput) {
 
 Your image was uploaded.
 
-Future upgrades can include:
-
-- 🔍 AI image analysis
-- 📝 OCR text extraction
-- 📷 Object detection
-- 🤖 Vision AI support
+Future upgrades:
+- AI image analysis
+- OCR text extraction
+- Object detection
+- Vision AI
           `);
 
         }, 500);
@@ -146,7 +172,9 @@ Future upgrades can include:
 
 }
 
+// =========================
 // NEW CHAT
+// =========================
 function newChat() {
 
   history = [];
@@ -165,8 +193,8 @@ I can help with:
 - 📚 Study
 - 💻 Coding
 - 🤖 AI
-- ✍️ Writing
 - 🌍 General Questions
+- ✍️ Writing
 - 📈 Business Ideas
 - 🎯 Career Guidance
 
@@ -175,7 +203,9 @@ Ask me anything.
 
 }
 
-// USER
+// =========================
+// USER MESSAGE
+// =========================
 function addUserMessage(text) {
 
   const msg =
@@ -202,7 +232,9 @@ function addUserMessage(text) {
 
 }
 
-// AI
+// =========================
+// AI MESSAGE
+// =========================
 function addAIMessage(text) {
 
   const msg =
@@ -231,9 +263,13 @@ function addAIMessage(text) {
     formatText(text)
   );
 
+  scrollBottom();
+
 }
 
+// =========================
 // TYPE EFFECT
+// =========================
 function typeText(el, text) {
 
   let i = 0;
@@ -249,7 +285,10 @@ function typeText(el, text) {
 
       scrollBottom();
 
-      setTimeout(typing, 2);
+      setTimeout(
+        typing,
+        2
+      );
 
     } else {
 
@@ -263,7 +302,9 @@ function typeText(el, text) {
 
 }
 
-// FORMAT
+// =========================
+// FORMAT TEXT
+// =========================
 function formatText(text) {
 
   return text
@@ -272,18 +313,38 @@ function formatText(text) {
     .replace(/>/g, "&gt;")
 
     .replace(
-      /```([\\s\\S]*?)```/g,
+
+      /```([\s\S]*?)```/g,
+
       "<pre><code>$1</code></pre>"
+
     )
 
-    .replace(/^# (.*$)/gim,"<h1>$1</h1>")
-    .replace(/^## (.*$)/gim,"<h2>$1</h2>")
-    .replace(/^### (.*$)/gim,"<h3>$1</h3>")
-    .replace(/\n/g,"<br>");
+    .replace(
+      /^# (.*$)/gim,
+      "<h1>$1</h1>"
+    )
+
+    .replace(
+      /^## (.*$)/gim,
+      "<h2>$1</h2>"
+    )
+
+    .replace(
+      /^### (.*$)/gim,
+      "<h3>$1</h3>"
+    )
+
+    .replace(
+      /\n/g,
+      "<br>"
+    );
 
 }
 
+// =========================
 // THINKING
+// =========================
 function showThinking() {
 
   const t =
@@ -318,6 +379,9 @@ function showThinking() {
 
 }
 
+// =========================
+// REMOVE THINKING
+// =========================
 function removeThinking() {
 
   const t =
@@ -329,7 +393,9 @@ function removeThinking() {
 
 }
 
+// =========================
 // MAIN AI
+// =========================
 async function learnTopic() {
 
   const text =
@@ -377,16 +443,19 @@ async function learnTopic() {
       data.result
     );
 
+    // SAVE USER
     history.push({
       role:"user",
       content:text
     });
 
+    // SAVE AI
     history.push({
       role:"assistant",
       content:data.result
     });
 
+    // SAVE CHAT HISTORY
     localStorage.setItem(
       "askai_history",
       JSON.stringify(history)
@@ -400,13 +469,19 @@ async function learnTopic() {
 # ❌ Error
 
 Something went wrong.
+
+Please try again.
     `);
+
+    console.log(error);
 
   }
 
 }
 
+// =========================
 // SCROLL
+// =========================
 function scrollBottom(){
 
   chatBox.scrollTop =
@@ -414,38 +489,98 @@ function scrollBottom(){
 
 }
 
+// =========================
 // LOAD HISTORY
-function loadHistory(){
+// =========================
+function loadHistory() {
 
-  if(!history.length){
+  const savedHistory = JSON.parse(
+    localStorage.getItem("askai_history") || "[]"
+  );
 
-    newChat();
+  history = savedHistory;
+
+  chatBox.innerHTML = "";
+
+  // NO HISTORY
+  if (!history.length) {
+
+    addAIMessage(`
+# 👋 Welcome to AskAi
+
+I can help with:
+
+- 📚 Study
+- 💻 Coding
+- 🤖 AI
+- 🌍 General Questions
+- ✍️ Writing
+- 📈 Business Ideas
+- 🎯 Career Guidance
+
+Ask me anything.
+    `);
 
     return;
 
   }
 
-  chatBox.innerHTML = "";
+  // LOAD OLD CHATS
+  history.forEach((msg) => {
 
-  history.forEach((msg)=>{
+    if (msg.role === "user") {
 
-    if(msg.role==="user"){
+      const userMsg =
+        document.createElement("div");
 
-      addUserMessage(
-        msg.content
-      );
+      userMsg.className =
+        "message user";
+
+      userMsg.innerHTML = `
+
+        <div class="bubble">
+          ${formatText(msg.content)}
+        </div>
+
+        <div class="avatar user-avatar">
+          G
+        </div>
+
+      `;
+
+      chatBox.appendChild(userMsg);
 
     } else {
 
-      addAIMessage(
-        msg.content
-      );
+      const aiMsg =
+        document.createElement("div");
+
+      aiMsg.className =
+        "message ai";
+
+      aiMsg.innerHTML = `
+
+        <div class="avatar ai-avatar">
+          AI
+        </div>
+
+        <div class="bubble">
+          ${formatText(msg.content)}
+        </div>
+
+      `;
+
+      chatBox.appendChild(aiMsg);
 
     }
 
   });
 
+  scrollBottom();
+
 }
 
+// =========================
 // START
+// =========================
 loadHistory();
