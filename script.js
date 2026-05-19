@@ -1,5 +1,5 @@
 // =========================
-// 🕉️OmAi👾 FINAL script.js
+// AskAi FINAL script.js
 // =========================
 
 const chatBox =
@@ -16,7 +16,7 @@ const voiceBtn =
 // HISTORY
 // =========================
 let history = JSON.parse(
-  localStorage.getItem("🕉️OmAi👾_history") || "[]"
+  localStorage.getItem("AskAi_history") || "[]"
 );
 
 // =========================
@@ -110,13 +110,13 @@ function newChat() {
   history = [];
 
   localStorage.removeItem(
-    "🕉️OmAi👾_history"
+    "AskAi_history"
   );
 
   chatBox.innerHTML = "";
 
   addAIMessage(`
-# 👋 Welcome to 🕉️OmAi👾
+# 👋 Welcome to AskAi
 
 I can help with:
 
@@ -387,7 +387,7 @@ async function learnTopic() {
 
     // SAVE CHAT HISTORY
     localStorage.setItem(
-      "🕉️OmAi👾_history",
+      "AskAi_history",
       JSON.stringify(history)
     );
 
@@ -425,7 +425,7 @@ function scrollBottom(){
 function loadHistory() {
 
   const savedHistory = JSON.parse(
-    localStorage.getItem("🕉️OmAi👾_history") || "[]"
+    localStorage.getItem("AskAi_history") || "[]"
   );
 
   history = savedHistory;
@@ -436,7 +436,7 @@ function loadHistory() {
   if (!history.length) {
 
     addAIMessage(`
-# 👋 Welcome to 🕉️OmAi👾
+# 👋 Welcome to AskAi
 
 I can help with:
 
