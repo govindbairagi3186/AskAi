@@ -455,3 +455,225 @@ textarea{
   }
 
 }
+
+/* =========================
+   HERO LOGO
+========================= */
+
+.hero-logo{
+  width:320px;
+  max-width:100%;
+  object-fit:contain;
+  animation:float 4s ease-in-out infinite;
+}
+
+/* FLOAT ANIMATION */
+
+@keyframes float{
+
+  0%{
+    transform:translateY(0px);
+  }
+
+  50%{
+    transform:translateY(-15px);
+  }
+
+  100%{
+    transform:translateY(0px);
+  }
+
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.features{
+
+  width:100%;
+
+  display:grid;
+
+  grid-template-columns:
+  repeat(auto-fit,minmax(260px,1fr));
+
+  gap:25px;
+
+  margin-top:80px;
+
+  padding-bottom:100px;
+
+}
+
+.feature-card{
+
+  background:#151515;
+
+  border:1px solid #2f2f2f;
+
+  border-radius:24px;
+
+  padding:30px;
+
+  min-height:220px;
+
+  transition:.3s;
+
+}
+
+.feature-card:hover{
+
+  transform:translateY(-8px);
+
+  border-color:#8b5cf6;
+
+  box-shadow:
+  0 0 40px rgba(139,92,246,.15);
+
+}
+
+.feature-icon{
+
+  font-size:42px;
+
+  margin-bottom:20px;
+
+  display:block;
+
+}
+
+.feature-title{
+
+  font-size:24px;
+
+  font-weight:700;
+
+  margin-bottom:15px;
+
+}
+
+.feature-text{
+
+  color:#9ca3af;
+
+  line-height:1.7;
+
+}
+
+/* =========================
+   ICON FIX
+========================= */
+
+.icon-btn{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  font-size:18px;
+
+  line-height:1;
+
+}
+
+/* =========================
+   FOOTER EFFECT
+========================= */
+
+.footer{
+
+  position:fixed;
+
+  bottom:12px;
+
+  left:50%;
+
+  transform:translateX(-50%);
+
+  color:#9ca3af;
+
+  font-size:14px;
+
+  z-index:999;
+
+  animation:footerGlow 3s infinite;
+
+}
+
+@keyframes footerGlow{
+
+  0%{
+    opacity:.5;
+    transform:translateX(-50%) scale(1);
+  }
+
+  50%{
+    opacity:1;
+    transform:translateX(-50%) scale(1.03);
+  }
+
+  100%{
+    opacity:.5;
+    transform:translateX(-50%) scale(1);
+  }
+
+}
+
+/* =========================
+   BETTER CHAT FEEL
+========================= */
+
+.bubble{
+  backdrop-filter:blur(10px);
+}
+
+.input-box{
+  border:1px solid #3a3a3a;
+  align-items:center;
+}
+
+textarea{
+  caret-color:white;
+}
+
+/* =========================
+   PAGE ANIMATION
+========================= */
+
+body{
+  animation:pageFade .5s ease;
+}
+
+@keyframes pageFade{
+
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:768px){
+
+  .hero-logo{
+    width:220px;
+    margin-top:30px;
+  }
+
+  .features{
+    grid-template-columns:1fr;
+  }
+
+}
