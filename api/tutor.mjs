@@ -23,7 +23,18 @@ export default async function handler(req, res) {
     // MODEL SWITCHING
     // =========================
     let selectedModel =
-      "mistralai/mistral-7b-instruct";
+      const MODELS = {
+
+  mistral:
+    "openai/gpt-3.5-turbo",
+
+  deepseek:
+    "deepseek/deepseek-chat",
+
+  llama:
+    "meta-llama/llama-3-8b-instruct"
+
+};
 
     if (model === "deepseek") {
 
@@ -113,7 +124,8 @@ Response Rules:
 
         body: JSON.stringify({
 
-          model: selectedModel,
+          model:
+MODELS[selectedModel] || MODELS.mistral,
 
           messages,
 
