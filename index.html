@@ -77,9 +77,12 @@
           Get Started
         </button>
 
-        <button class="secondary-btn">
-          Explore AI
-        </button>
+        <button
+  class="secondary-btn"
+  onclick="document.getElementById('features').scrollIntoView({ behavior:'smooth' })"
+>
+  Explore AI
+</button>
 
       </div>
 
@@ -89,7 +92,7 @@
     <div class="hero-right">
 
       <img
-        src="AskAi.gif"
+       <img src="logo.gif" class="hero-logo">
         alt="AskAi Logo"
         class="hero-logo"
       />
@@ -99,7 +102,7 @@
   </div>
 
   <!-- FEATURES -->
-  <div class="features">
+ <div id="features" class="features">
 
     <div class="feature-card">
       <div class="feature-icon">🤖</div>
