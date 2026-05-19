@@ -1,42 +1,102 @@
 export default async function handler(req, res) {
 
-  // Allow only POST
+  // ONLY POST
   if (req.method !== "POST") {
 
     return res.status(405).json({
-      result: "Method not allowed"
+      error: "Method not allowed"
     });
 
   }
 
   try {
 
-    const { topic, history } = req.body;
+    const {
+
+      topic,
+      history,
+      model
+
+    } = req.body;
+
+    // =========================
+    // MODEL SWITCHING
+    // =========================
+    let selectedModel =
+      "mistralai/mistral-7b-instruct";
+
+    if (model === "deepseek") {
+
+      selectedModel =
+        "deepseek/deepseek-r1";
+
+    }
+
+    if (model === "llama") {
+
+      selectedModel =
+        "meta-llama/llama-3.1-8b-instruct";
+
+    }
 
     // =========================
     // SYSTEM PROMPT
     // =========================
+    const messages = [
 
-    const systemPrompt = `
-You are AskAi, a smart AI assistant like ChatGPT.
+      {
 
-Rules:
-- Answer naturally
-- Be helpful
-- Give complete answers
-- Use bullet points
-- Use examples
+        role: "system",
+
+        content: `
+
+You are AskAi.
+
+A premium AI assistant created by GOVIND VAISHNAV.
+
+Your personality:
+- Helpful
+- Smart
+- Friendly
+- Modern
+- Clear
+- Professional
+
+Response Rules:
+- Use markdown formatting
 - Explain clearly
-- Avoid giant boring paragraphs
-- Behave like ChatGPT
-`;
+- Give examples when needed
+- Make answers visually beautiful
+- Use headings and bullets
+- Give coding help properly
+- Be accurate
+- Sound like ChatGPT/Gemini
+
+`
+
+      },
+
+      // CHAT HISTORY
+      ...(history || []),
+
+      // CURRENT MESSAGE
+      {
+
+        role: "user",
+
+        content: topic
+
+      }
+
+    ];
 
     // =========================
-    // API REQUEST
+    // API CALL
     // =========================
-
     const response = await fetch(
+
       "https://openrouter.ai/api/v1/chat/completions",
+
       {
 
         method: "POST",
@@ -44,64 +104,42 @@ Rules:
         headers: {
 
           "Authorization":
-            "Bearer " + process.env.OPENROUTER_API_KEY,
+            `Bearer ${process.env.OPENROUTER_API_KEY}`,
 
-          "Content-Type": "application/json",
-
-          "HTTP-Referer":
-            "https://ask-ai-phi-nine.vercel.app",
-
-          "X-Title":
-            "AskAi"
+          "Content-Type":
+            "application/json"
 
         },
-body: JSON.stringify({
 
-  model:
-     "openai/gpt-3.5-turbo",
+        body: JSON.stringify({
 
-  messages: [
+          model: selectedModel,
 
-    {
-      role: "system",
-      content: systemPrompt
-    },
+          messages,
 
-    ...(history || []),
+          temperature: 0.7,
 
-    {
-      role: "user",
-      content: topic
-    }
+          max_tokens: 1200
 
-  ],
+        })
 
-  temperature: 0.7,
-  max_tokens: 1000
-
-})
       }
+
     );
 
-    // =========================
-    // CONVERT RESPONSE
-    // =========================
-
-    const data = await response.json();
-
-    console.log(data);
+    const data =
+      await response.json();
 
     // =========================
-    // ERROR CHECK
+    // API ERROR
     // =========================
-
     if (data.error) {
 
       return res.status(500).json({
 
-        result:
-          "❌ OpenRouter Error:\n" +
-          data.error.message
+        error:
+          data.error.message ||
+          "OpenRouter Error"
 
       });
 
@@ -110,12 +148,15 @@ body: JSON.stringify({
     // =========================
     // SUCCESS
     // =========================
+    const result =
+
+      data.choices?.[0]?.message?.content ||
+
+      "No response generated.";
 
     return res.status(200).json({
 
-      result:
-        data.choices?.[0]?.message?.content
-        || "No response."
+      result
 
     });
 
@@ -125,8 +166,8 @@ body: JSON.stringify({
 
     return res.status(500).json({
 
-      result:
-        "❌ Server Error:\n" + error.message
+      error:
+        "Server error occurred."
 
     });
 
