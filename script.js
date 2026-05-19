@@ -1,7 +1,8 @@
 // =========================
-// AskAi FINAL script.js
+// AskAi PREMIUM script.js
 // =========================
 
+// ELEMENTS
 const chatBox =
   document.getElementById("chatBox");
 
@@ -11,13 +12,36 @@ const topicInput =
 const voiceBtn =
   document.getElementById("voiceBtn");
 
+const historyList =
+  document.getElementById("historyList");
+
+const fileInput =
+  document.getElementById("fileInput");
+
+const modelSelect =
+  document.getElementById("modelSelect");
 
 // =========================
-// HISTORY
+// CHAT MEMORY
 // =========================
 let history = JSON.parse(
-  localStorage.getItem("AskAi_history") || "[]"
+  localStorage.getItem("askai_history") || "[]"
 );
+
+// =========================
+// LANDING PAGE LOGIC
+// =========================
+window.startApp = function () {
+
+  document.getElementById(
+    "landingPage"
+  ).style.display = "none";
+
+  document.getElementById(
+    "mainApp"
+  ).style.display = "flex";
+
+};
 
 // =========================
 // AUTO RESIZE
@@ -38,9 +62,6 @@ topicInput?.addEventListener(
 // =========================
 // ENTER TO SEND
 // =========================
-// =========================
-// ENTER TO SEND
-// =========================
 topicInput?.addEventListener(
   "keydown",
   (e) => {
@@ -58,11 +79,11 @@ topicInput?.addEventListener(
 
   }
 );
+
 // =========================
 // VOICE INPUT
 // =========================
 const SpeechRecognition =
-
   window.SpeechRecognition ||
   window.webkitSpeechRecognition;
 
@@ -100,7 +121,46 @@ if (SpeechRecognition && voiceBtn) {
 
 }
 
+// =========================
+// FILE UPLOAD
+// =========================
+if (fileInput) {
 
+  fileInput.addEventListener(
+    "change",
+    (e) => {
+
+      const file =
+        e.target.files[0];
+
+      if (!file) return;
+
+      addUserMessage(
+        `📎 Uploaded file: ${file.name}`
+      );
+
+      setTimeout(() => {
+
+        addAIMessage(`
+# 📎 File Uploaded Successfully
+
+File Name:
+${file.name}
+
+Future Support:
+- PDF Analysis
+- AI Summaries
+- OCR Extraction
+- AI Notes
+- Smart Search
+        `);
+
+      }, 500);
+
+    }
+  );
+
+}
 
 // =========================
 // NEW CHAT
@@ -110,23 +170,37 @@ function newChat() {
   history = [];
 
   localStorage.removeItem(
-    "AskAi_history"
+    "askai_history"
   );
 
   chatBox.innerHTML = "";
 
+  addWelcomeMessage();
+
+  updateSidebarHistory();
+
+}
+
+// =========================
+// WELCOME MESSAGE
+// =========================
+function addWelcomeMessage() {
+
   addAIMessage(`
 # 👋 Welcome to AskAi
 
-I can help with:
+Your premium AI assistant.
 
-- 📚 Study
-- 💻 Coding
-- 🤖 AI
-- 🌍 General Questions
+Capabilities:
+
+- 🤖 AI Chat
+- 💻 Coding Help
+- 📚 Study Notes
 - ✍️ Writing
+- 🌍 General Knowledge
 - 📈 Business Ideas
-- 🎯 Career Guidance
+- 🎨 Creative Thinking
+- 🧠 AI Memory
 
 Ask me anything.
   `);
@@ -243,11 +317,8 @@ function formatText(text) {
     .replace(/>/g, "&gt;")
 
     .replace(
-
       /```([\s\S]*?)```/g,
-
       "<pre><code>$1</code></pre>"
-
     )
 
     .replace(
@@ -266,6 +337,11 @@ function formatText(text) {
     )
 
     .replace(
+      /\*\*(.*?)\*\*/g,
+      "<b>$1</b>"
+    )
+
+    .replace(
       /\n/g,
       "<br>"
     );
@@ -273,7 +349,7 @@ function formatText(text) {
 }
 
 // =========================
-// THINKING
+// THINKING ANIMATION
 // =========================
 function showThinking() {
 
@@ -324,7 +400,7 @@ function removeThinking() {
 }
 
 // =========================
-// MAIN AI
+// MAIN AI FUNCTION
 // =========================
 async function learnTopic() {
 
@@ -358,7 +434,9 @@ async function learnTopic() {
 
           topic:text,
 
-          history
+          history,
+
+          model:modelSelect.value
 
         })
 
@@ -368,6 +446,18 @@ async function learnTopic() {
       await response.json();
 
     removeThinking();
+
+    if (data.error) {
+
+      addAIMessage(`
+# ❌ Error
+
+${data.error}
+      `);
+
+      return;
+
+    }
 
     addAIMessage(
       data.result
@@ -385,11 +475,13 @@ async function learnTopic() {
       content:data.result
     });
 
-    // SAVE CHAT HISTORY
+    // SAVE MEMORY
     localStorage.setItem(
-      "AskAi_history",
+      "askai_history",
       JSON.stringify(history)
     );
+
+    updateSidebarHistory();
 
   } catch(error){
 
@@ -420,42 +512,61 @@ function scrollBottom(){
 }
 
 // =========================
+// SIDEBAR HISTORY
+// =========================
+function updateSidebarHistory() {
+
+  if (!historyList) return;
+
+  historyList.innerHTML = "";
+
+  const chats = history.filter(
+    msg => msg.role === "user"
+  );
+
+  chats
+    .slice()
+    .reverse()
+    .slice(0,20)
+    .forEach((msg) => {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "history-item";
+
+      item.innerText =
+        msg.content.slice(0,40);
+
+      item.onclick = () => {
+
+        topicInput.value =
+          msg.content;
+
+      };
+
+      historyList.appendChild(item);
+
+    });
+
+}
+
+// =========================
 // LOAD HISTORY
 // =========================
 function loadHistory() {
 
-  const savedHistory = JSON.parse(
-    localStorage.getItem("AskAi_history") || "[]"
-  );
-
-  history = savedHistory;
-
   chatBox.innerHTML = "";
 
-  // NO HISTORY
   if (!history.length) {
 
-    addAIMessage(`
-# 👋 Welcome to AskAi
-
-I can help with:
-
-- 📚 Study
-- 💻 Coding
-- 🤖 AI
-- 🌍 General Questions
-- ✍️ Writing
-- 📈 Business Ideas
-- 🎯 Career Guidance
-
-Ask me anything.
-    `);
+    addWelcomeMessage();
 
     return;
 
   }
 
-  // LOAD OLD CHATS
   history.forEach((msg) => {
 
     if (msg.role === "user") {
@@ -511,6 +622,8 @@ Ask me anything.
 }
 
 // =========================
-// START
+// INIT
 // =========================
 loadHistory();
+
+updateSidebarHistory();
