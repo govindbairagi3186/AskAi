@@ -28,20 +28,23 @@
   <!-- SIDEBAR -->
   <aside class="sidebar">
 
-    <div>
+<div>
 
-      <div class="logo">
-        ✨ AskAi 👾
-      </div>
+  <div class="logo">
+    ✨ AskAi 👾
+  </div>
 
-      <button
-        class="new-chat-btn"
-        onclick="newChat()"
-      >
-        + New Chat
-      </button>
+  <button
+    class="new-chat-btn"
+    onclick="newChat()"
+  >
+    + New Chat
+  </button>
 
-    </div>
+  <!-- CHAT HISTORY -->
+  <div id="historyList" class="history-list"></div>
+
+</div>
 
     <div class="sidebar-footer">
       Made with ❤️ by GOVIND VAISHNAV 🧿
@@ -53,9 +56,27 @@
   <main class="main">
 
     <!-- TOPBAR -->
-    <div class="topbar">
-      AskAi
-    </div>
+   <div class="topbar">
+
+  <span>AskAi</span>
+
+  <select id="modelSelect">
+
+    <option value="mistral">
+      Mistral
+    </option>
+
+    <option value="deepseek">
+      DeepSeek
+    </option>
+
+    <option value="llama">
+      Llama
+    </option>
+
+  </select>
+
+</div>
 
     <!-- CHAT -->
     <div
@@ -74,8 +95,19 @@
           placeholder="Message AskAi..."
         ></textarea>
 
+<!-- FILE-->
+<label
+  for="fileInput"
+  class="icon-btn"
+>
+  📎
+</label>
 
-
+<input
+  type="file"
+  id="fileInput"
+  hidden
+/>
         <!-- VOICE -->
         <button
           id="voiceBtn"
