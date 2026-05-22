@@ -37,6 +37,30 @@ let pinned = JSON.parse(
 // =========================
 
 function startApp() {
+  // =========================
+// LOADING TRANSITION
+// =========================
+
+function startLoading() {
+
+  const loading =
+    document.getElementById(
+      "loadingScreen"
+    );
+
+  loading.style.display =
+    "flex";
+
+  setTimeout(() => {
+
+    loading.style.display =
+      "none";
+
+    startApp();
+
+  }, 2500);
+
+}
 
   document.getElementById(
     "landingPage"
