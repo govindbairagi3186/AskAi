@@ -1,5 +1,5 @@
 // =========================
-// AskAi PREMIUM script.js
+// AskAi FINAL script.js
 // =========================
 
 // ELEMENTS
@@ -12,24 +12,19 @@ const topicInput =
 const voiceBtn =
   document.getElementById("voiceBtn");
 
-const historyList =
-  document.getElementById("historyList");
-
-const fileInput =
-  document.getElementById("fileInput");
-
-const modelSelect =
-  document.getElementById("modelSelect");
-
 // =========================
 // CHAT MEMORY
 // =========================
 let history = JSON.parse(
-  localStorage.getItem("askai_history") || "[]"
+
+  localStorage.getItem(
+    "askai_history"
+  ) || "[]"
+
 );
 
 // =========================
-// LANDING PAGE LOGIC
+// START APP
 // =========================
 window.startApp = function () {
 
@@ -38,7 +33,7 @@ window.startApp = function () {
   ).style.display = "none";
 
   document.getElementById(
-    "mainApp"
+    "app"
   ).style.display = "flex";
 
 };
@@ -84,7 +79,9 @@ topicInput?.addEventListener(
 // VOICE INPUT
 // =========================
 const SpeechRecognition =
+
   window.SpeechRecognition ||
+
   window.webkitSpeechRecognition;
 
 if (SpeechRecognition && voiceBtn) {
@@ -107,6 +104,7 @@ if (SpeechRecognition && voiceBtn) {
   recognition.onresult = (e) => {
 
     topicInput.value =
+
       e.results[0][0].transcript;
 
     voiceBtn.innerText = "🎤";
@@ -118,47 +116,6 @@ if (SpeechRecognition && voiceBtn) {
     voiceBtn.innerText = "🎤";
 
   };
-
-}
-
-// =========================
-// FILE UPLOAD
-// =========================
-if (fileInput) {
-
-  fileInput.addEventListener(
-    "change",
-    (e) => {
-
-      const file =
-        e.target.files[0];
-
-      if (!file) return;
-
-      addUserMessage(
-        `📎 Uploaded file: ${file.name}`
-      );
-
-      setTimeout(() => {
-
-        addAIMessage(`
-# 📎 File Uploaded Successfully
-
-File Name:
-${file.name}
-
-Future Support:
-- PDF Analysis
-- AI Summaries
-- OCR Extraction
-- AI Notes
-- Smart Search
-        `);
-
-      }, 500);
-
-    }
-  );
 
 }
 
@@ -176,8 +133,6 @@ function newChat() {
   chatBox.innerHTML = "";
 
   addWelcomeMessage();
-
-  updateSidebarHistory();
 
 }
 
@@ -200,7 +155,6 @@ Capabilities:
 - 🌍 General Knowledge
 - 📈 Business Ideas
 - 🎨 Creative Thinking
-- 🧠 AI Memory
 
 Ask me anything.
   `);
@@ -283,6 +237,7 @@ function typeText(el, text) {
     if (i < text.length) {
 
       el.innerHTML =
+
         text.slice(0, i) + "▌";
 
       i++;
@@ -314,11 +269,15 @@ function formatText(text) {
   return text
 
     .replace(/</g, "&lt;")
+
     .replace(/>/g, "&gt;")
 
     .replace(
+
       /```([\s\S]*?)```/g,
+
       "<pre><code>$1</code></pre>"
+
     )
 
     .replace(
@@ -349,7 +308,7 @@ function formatText(text) {
 }
 
 // =========================
-// THINKING ANIMATION
+// THINKING
 // =========================
 function showThinking() {
 
@@ -423,20 +382,20 @@ async function learnTopic() {
     const response =
       await fetch("/api/tutor", {
 
-        method:"POST",
+        method: "POST",
 
-        headers:{
+        headers: {
+
           "Content-Type":
-          "application/json"
+            "application/json"
+
         },
 
-        body:JSON.stringify({
+        body: JSON.stringify({
 
-          topic:text,
+          topic: text,
 
-          history,
-
-          model:modelSelect.value
+          history
 
         })
 
@@ -447,43 +406,38 @@ async function learnTopic() {
 
     removeThinking();
 
-    if (data.error) {
-
-      addAIMessage(`
-# ❌ Error
-
-${data.error}
-      `);
-
-      return;
-
-    }
-
     addAIMessage(
       data.result
     );
 
     // SAVE USER
     history.push({
-      role:"user",
-      content:text
+
+      role: "user",
+
+      content: text
+
     });
 
     // SAVE AI
     history.push({
-      role:"assistant",
-      content:data.result
+
+      role: "assistant",
+
+      content: data.result
+
     });
 
     // SAVE MEMORY
     localStorage.setItem(
+
       "askai_history",
+
       JSON.stringify(history)
+
     );
 
-    updateSidebarHistory();
-
-  } catch(error){
+  } catch (error) {
 
     removeThinking();
 
@@ -504,51 +458,11 @@ Please try again.
 // =========================
 // SCROLL
 // =========================
-function scrollBottom(){
+function scrollBottom() {
 
   chatBox.scrollTop =
+
     chatBox.scrollHeight;
-
-}
-
-// =========================
-// SIDEBAR HISTORY
-// =========================
-function updateSidebarHistory() {
-
-  if (!historyList) return;
-
-  historyList.innerHTML = "";
-
-  const chats = history.filter(
-    msg => msg.role === "user"
-  );
-
-  chats
-    .slice()
-    .reverse()
-    .slice(0,20)
-    .forEach((msg) => {
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "history-item";
-
-      item.innerText =
-        msg.content.slice(0,40);
-
-      item.onclick = () => {
-
-        topicInput.value =
-          msg.content;
-
-      };
-
-      historyList.appendChild(item);
-
-    });
 
 }
 
@@ -571,25 +485,7 @@ function loadHistory() {
 
     if (msg.role === "user") {
 
-      const userMsg =
-        document.createElement("div");
-
-      userMsg.className =
-        "message user";
-
-      userMsg.innerHTML = `
-
-        <div class="bubble">
-          ${formatText(msg.content)}
-        </div>
-
-        <div class="avatar user-avatar">
-          G
-        </div>
-
-      `;
-
-      chatBox.appendChild(userMsg);
+      addUserMessage(msg.content);
 
     } else {
 
@@ -625,5 +521,3 @@ function loadHistory() {
 // INIT
 // =========================
 loadHistory();
-
-updateSidebarHistory();
