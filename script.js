@@ -11,56 +11,49 @@ const topicInput =
 const voiceBtn =
   document.getElementById("voiceBtn");
 
-const searchInput =
-  document.getElementById("searchChats");
-
-const recentChats =
-  document.getElementById("recentChats");
-
-const pinnedChats =
-  document.getElementById("pinnedChats");
-
 // =========================
-// MEMORY
+// APP START
 // =========================
 
-let history = JSON.parse(
-  localStorage.getItem("askai_history") || "[]"
-);
+// HIDE APP INITIALLY
+window.onload = () => {
 
-let pinned = JSON.parse(
-  localStorage.getItem("askai_pinned") || "[]"
-);
+  document.getElementById(
+    "app"
+  ).style.display = "none";
+
+};
+
+// =========================
+// START LOADING
+// =========================
+
+function startLoading() {
+
+  const loader =
+    document.getElementById(
+      "loadingScreen"
+    );
+
+  loader.style.display =
+    "flex";
+
+  setTimeout(() => {
+
+    loader.style.display =
+      "none";
+
+    startApp();
+
+  }, 2200);
+
+}
 
 // =========================
 // START APP
 // =========================
 
 function startApp() {
-  // =========================
-// LOADING TRANSITION
-// =========================
-
-function startLoading() {
-
-  const loading =
-    document.getElementById(
-      "loadingScreen"
-    );
-
-  loading.style.display =
-    "flex";
-
-  setTimeout(() => {
-
-    loading.style.display =
-      "none";
-
-    startApp();
-
-  }, 2500);
-
-}
 
   document.getElementById(
     "landingPage"
@@ -83,7 +76,9 @@ function toggleTheme() {
   );
 
   const btn =
-    document.getElementById("themeBtn");
+    document.getElementById(
+      "themeBtn"
+    );
 
   if (
     document.body.classList.contains(
@@ -91,35 +86,15 @@ function toggleTheme() {
     )
   ) {
 
-    btn.innerText = "Ved🤖";
-
-    localStorage.setItem(
-      "askai_theme",
-      "light"
-    );
+    btn.innerHTML =
+      "🤖 Ved";
 
   } else {
 
-    btn.innerText = "Shastra👾";
-
-    localStorage.setItem(
-      "askai_theme",
-      "dark"
-    );
+    btn.innerHTML =
+      "👾 Shastra";
 
   }
-
-}
-
-// LOAD THEME
-const savedTheme =
-  localStorage.getItem("askai_theme");
-
-if (savedTheme === "light") {
-
-  document.body.classList.add(
-    "light-theme"
-  );
 
 }
 
@@ -163,7 +138,7 @@ topicInput?.addEventListener(
 );
 
 // =========================
-// VOICE
+// VOICE INPUT
 // =========================
 
 const SpeechRecognition =
@@ -194,53 +169,23 @@ if (SpeechRecognition) {
 
   };
 
+  recognition.onerror = () => {
+
+    voiceBtn.innerText = "🎤";
+
+  };
+
 }
 
 // =========================
-// NEW CHAT
+// HISTORY
 // =========================
 
-function newChat() {
-
-  history = [];
-
-  localStorage.removeItem(
+let history = JSON.parse(
+  localStorage.getItem(
     "askai_history"
-  );
-
-  chatBox.innerHTML = "";
-
-  addWelcomeMessage();
-
-  loadRecentChats();
-
-}
-
-// =========================
-// WELCOME
-// =========================
-
-function addWelcomeMessage() {
-
-  addAIMessage(`
-# 👋 Welcome to AskAi
-
-Your intelligent AI assistant.
-
-Capabilities:
-
-- 🤖 AI Chat
-- 💻 Coding
-- 📚 Study
-- ✍️ Writing
-- 🌍 Knowledge
-- 📈 Business
-- 🎨 Creativity
-
-Ask anything.
-  `);
-
-}
+  ) || "[]"
+);
 
 // =========================
 // USER MESSAGE
@@ -248,16 +193,16 @@ Ask anything.
 
 function addUserMessage(text) {
 
-  const div =
+  const msg =
     document.createElement("div");
 
-  div.className =
+  msg.className =
     "message user";
 
-  div.innerHTML = `
+  msg.innerHTML = `
 
     <div class="bubble">
-      ${formatText(text)}
+      ${text}
     </div>
 
     <div class="avatar user-avatar">
@@ -266,7 +211,7 @@ function addUserMessage(text) {
 
   `;
 
-  chatBox.appendChild(div);
+  chatBox.appendChild(msg);
 
   scrollBottom();
 
@@ -278,13 +223,13 @@ function addUserMessage(text) {
 
 function addAIMessage(text) {
 
-  const div =
+  const msg =
     document.createElement("div");
 
-  div.className =
+  msg.className =
     "message ai";
 
-  div.innerHTML = `
+  msg.innerHTML = `
 
     <div class="avatar ai-avatar">
       AI
@@ -294,14 +239,14 @@ function addAIMessage(text) {
 
   `;
 
-  chatBox.appendChild(div);
+  chatBox.appendChild(msg);
 
   const bubble =
-    div.querySelector(".ai-text");
+    msg.querySelector(".ai-text");
 
   typeText(
     bubble,
-    formatText(text)
+    text
   );
 
   scrollBottom();
@@ -327,7 +272,7 @@ function typeText(el, text) {
 
       setTimeout(
         typing,
-        2
+        5
       );
 
     } else {
@@ -343,38 +288,20 @@ function typeText(el, text) {
 }
 
 // =========================
-// FORMAT
-// =========================
-
-function formatText(text) {
-
-  return text
-
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-
-    .replace(
-      /\n/g,
-      "<br>"
-    );
-
-}
-
-// =========================
 // THINKING
 // =========================
 
 function showThinking() {
 
-  const t =
+  const think =
     document.createElement("div");
 
-  t.id = "thinking";
+  think.id = "thinking";
 
-  t.className =
+  think.className =
     "message ai";
 
-  t.innerHTML = `
+  think.innerHTML = `
 
     <div class="avatar ai-avatar">
       AI
@@ -386,7 +313,7 @@ function showThinking() {
 
   `;
 
-  chatBox.appendChild(t);
+  chatBox.appendChild(think);
 
   scrollBottom();
 
@@ -394,12 +321,12 @@ function showThinking() {
 
 function removeThinking() {
 
-  const t =
+  const think =
     document.getElementById(
       "thinking"
     );
 
-  if (t) t.remove();
+  if (think) think.remove();
 
 }
 
@@ -452,13 +379,13 @@ async function learnTopic() {
     );
 
     history.push({
-      role:"user",
-      content:text
+      role: "user",
+      content: text
     });
 
     history.push({
-      role:"assistant",
-      content:data.result
+      role: "assistant",
+      content: data.result
     });
 
     localStorage.setItem(
@@ -468,15 +395,13 @@ async function learnTopic() {
 
     loadRecentChats();
 
-  } catch(error) {
+  } catch (error) {
 
     removeThinking();
 
-    addAIMessage(`
-# ❌ Error
-
-Something went wrong.
-    `);
+    addAIMessage(
+      "Something went wrong."
+    );
 
   }
 
@@ -488,9 +413,14 @@ Something went wrong.
 
 function loadRecentChats() {
 
-  if (!recentChats) return;
+  const recent =
+    document.getElementById(
+      "recentChats"
+    );
 
-  recentChats.innerHTML = "";
+  if (!recent) return;
+
+  recent.innerHTML = "";
 
   const chats =
     history.filter(
@@ -500,127 +430,57 @@ function loadRecentChats() {
   chats
     .slice()
     .reverse()
-    .forEach((msg) => {
+    .slice(0, 10)
+    .forEach((chat) => {
 
       const item =
         document.createElement("div");
 
       item.className =
-        "sidebar-item";
+        "recent-item";
 
-      item.innerHTML = `
-        💬 ${msg.content.slice(0,25)}
-      `;
+      item.innerHTML =
+        "💬 " +
+        chat.content.slice(0, 25);
 
       item.onclick = () => {
 
         topicInput.value =
-          msg.content;
+          chat.content;
 
       };
 
-      // PIN BUTTON
-      const pin =
-        document.createElement("span");
-
-      pin.innerHTML = "📌";
-
-      pin.style.float = "right";
-
-      pin.onclick = (e) => {
-
-        e.stopPropagation();
-
-        pinned.push(msg.content);
-
-        localStorage.setItem(
-          "askai_pinned",
-          JSON.stringify(pinned)
-        );
-
-        loadPinnedChats();
-
-      };
-
-      item.appendChild(pin);
-
-      recentChats.appendChild(item);
+      recent.appendChild(item);
 
     });
 
 }
 
 // =========================
-// PINNED
+// NEW CHAT
 // =========================
 
-function loadPinnedChats() {
+function newChat() {
 
-  if (!pinnedChats) return;
+  history = [];
 
-  pinnedChats.innerHTML = "";
+  localStorage.removeItem(
+    "askai_history"
+  );
 
-  pinned.forEach((chat) => {
+  chatBox.innerHTML = "";
 
-    const item =
-      document.createElement("div");
+  addAIMessage(`
+👋 Hey buddy!
 
-    item.className =
-      "sidebar-item";
+I'm AskAi.
 
-    item.innerHTML =
-      `📌 ${chat.slice(0,25)}`;
+What do you want to talk about today?
+  `);
 
-    item.onclick = () => {
-
-      topicInput.value = chat;
-
-    };
-
-    pinnedChats.appendChild(item);
-
-  });
+  loadRecentChats();
 
 }
-
-// =========================
-// SEARCH
-// =========================
-
-searchInput?.addEventListener(
-  "input",
-  () => {
-
-    const value =
-      searchInput.value.toLowerCase();
-
-    const items =
-      document.querySelectorAll(
-        ".sidebar-item"
-      );
-
-    items.forEach((item) => {
-
-      if (
-        item.innerText
-          .toLowerCase()
-          .includes(value)
-      ) {
-
-        item.style.display =
-          "block";
-
-      } else {
-
-        item.style.display =
-          "none";
-
-      }
-
-    });
-
-  }
-);
 
 // =========================
 // SCROLL
@@ -634,16 +494,20 @@ function scrollBottom() {
 }
 
 // =========================
-// LOAD CHAT
+// LOAD OLD CHATS
 // =========================
 
 function loadHistory() {
 
-  chatBox.innerHTML = "";
-
   if (!history.length) {
 
-    addWelcomeMessage();
+    addAIMessage(`
+👋 Hey buddy!
+
+I'm AskAi.
+
+Ask me anything.
+    `);
 
     return;
 
@@ -651,7 +515,9 @@ function loadHistory() {
 
   history.forEach((msg) => {
 
-    if (msg.role === "user") {
+    if (
+      msg.role === "user"
+    ) {
 
       addUserMessage(
         msg.content
@@ -676,5 +542,3 @@ function loadHistory() {
 loadHistory();
 
 loadRecentChats();
-
-loadPinnedChats();
