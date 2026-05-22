@@ -551,3 +551,14 @@ RECENTS
 .recent-item:hover{
   background:#333;
 }
+/* =========================
+CHAT FOOTER
+========================= */
+
+.chat-footer{
+  text-align:center;
+  font-size:13px;
+  color:#9ca3af;
+  padding-bottom:10px;
+  padding-top:5px;
+}
