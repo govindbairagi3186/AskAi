@@ -26,12 +26,13 @@
 
 <body>
 
-<!-- LOADING SCREEN -->
+<!-- LOADER -->
 <div id="loader">
 
   <img
     src="./logo.gif"
     class="loader-logo"
+    alt="logo"
   />
 
 </div>
@@ -39,19 +40,20 @@
 <!-- LANDING PAGE -->
 <section id="landingPage">
 
+  <!-- NAVBAR -->
   <nav class="navbar">
 
-   <div class="logo">
+    <div class="logo">
 
-  <img
-    src="logo.png"
-    alt="AskAi Logo"
-    class="logo-img"
-  />
+      <img
+        src="./logo.gif"
+        alt="AskAi Logo"
+        class="logo-img"
+      />
 
-  <span>AskAi</span>
+      <span>AskAi</span>
 
-</div>
+    </div>
 
     <button
       class="start-btn"
@@ -62,6 +64,7 @@
 
   </nav>
 
+  <!-- HERO -->
   <div class="hero">
 
     <div class="hero-left">
@@ -83,7 +86,7 @@
           class="hero-btn"
           onclick="startApp()"
         >
-          Get Started
+          Explore AI
         </button>
 
       </div>
@@ -95,6 +98,7 @@
       <img
         src="./logo.gif"
         class="hero-logo"
+        alt="hero logo"
       />
 
     </div>
@@ -114,10 +118,20 @@
 
     <div>
 
+      <!-- SIDEBAR LOGO -->
       <div class="logo">
-        ✨ AskAi 👾
+
+        <img
+          src="./logo.gif"
+          class="logo-img"
+          alt="logo"
+        />
+
+        <span>AskAi</span>
+
       </div>
 
+      <!-- NEW CHAT -->
       <button
         class="new-chat-btn"
         onclick="newChat()"
@@ -127,6 +141,7 @@
 
     </div>
 
+    <!-- FOOTER -->
     <div class="sidebar-footer">
       Made with ❤️ by GOVIND VAISHNAV 🧿
     </div>
@@ -154,6 +169,7 @@
 
       <div class="input-box">
 
+        <!-- TEXTAREA -->
         <textarea
           id="topic"
           rows="1"
@@ -189,6 +205,7 @@
   Made with ❤️ by Govind Vaishnav 🧿
 </footer>
 
+<!-- SCRIPT -->
 <script src="script.js"></script>
 
 </body>
