@@ -87,71 +87,66 @@
 >
 
   <!-- SIDEBAR -->
-  <aside class="sidebar">
+  <!-- SIDEBAR -->
+<aside class="sidebar">
 
-    <div>
+  <div>
 
-      <!-- LOGO -->
-      <div class="logo">
-        ✨ AskAi 👾
-      </div>
+    <!-- LOGO -->
+    <div class="logo">
+      ✨ AskAi 👾
+    </div>
 
-      <!-- NEW CHAT -->
-      <button
-        class="new-chat-btn"
-        onclick="newChat()"
-      >
-        ✏️ New chat
-      </button>
+    <!-- NEW CHAT -->
+    <div
+      class="sidebar-item"
+      onclick="newChat()"
+    >
+      ✏️ New Chat
+    </div>
 
-      <!-- SEARCH -->
-      <div class="sidebar-item">
-        🔍 Search chats
-      </div>
+    <!-- SEARCH -->
+    <div class="sidebar-item">
 
-      <!-- PROJECTS -->
-      <div class="sidebar-item">
-        📁 Projects
-      </div>
+      🔍 Search Chats
 
-      <!-- CODEX -->
-      <div class="sidebar-item">
-        ⚙️ Codex
-      </div>
-
-      <!-- MORE -->
-      <div class="sidebar-item">
-        ⋯ More
-      </div>
-
-      <!-- PINNED -->
-      <div class="sidebar-title">
-        Pinned
-      </div>
-
-      <div class="history-item active">
-        💬 AI Tutor Chatbot
-      </div>
-
-      <!-- RECENTS -->
-      <div class="sidebar-title">
-        Recents
-      </div>
-
-      <!-- HISTORY -->
-      <div
-        id="historyList"
-        class="history-list"
-      ></div>
+      <input
+        type="text"
+        id="searchChat"
+        placeholder="Search..."
+        class="search-input"
+      />
 
     </div>
 
-    <!-- FOOTER -->
-    <div class="sidebar-footer">
-      Made with ❤️ by GOVIND VAISHNAV 🧿
+    <!-- PINNED -->
+    <div class="sidebar-title">
+      📌 Pinned Chats
     </div>
 
-  </aside>
+    <div
+      id="pinnedList"
+      class="history-list"
+    ></div>
+
+    <!-- RECENTS -->
+    <div class="sidebar-title">
+      🕒 Recent Chats
+    </div>
+
+    <div
+      id="historyList"
+      class="history-list"
+    ></div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="sidebar-footer">
+    Made with ❤️ by GOVIND VAISHNAV 🧿
+  </div>
+
+</aside>
 
   <!-- MAIN -->
   <main class="main">
