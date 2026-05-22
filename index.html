@@ -13,7 +13,7 @@
   <title>AskAi</title>
 
   <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
 
@@ -26,24 +26,27 @@
 
 <body>
 
-<!-- ========================= -->
+<!-- LOADING SCREEN -->
+<div id="loader">
+
+  <img
+    src="./logo.gif"
+    class="loader-logo"
+  />
+
+</div>
+
 <!-- LANDING PAGE -->
-<!-- ========================= -->
+<section id="landingPage">
 
-<section
-  id="landingPage"
-  class="landing-page"
->
-
-  <!-- NAVBAR -->
-  <nav class="landing-nav">
+  <nav class="navbar">
 
     <div class="nav-logo">
       ✨ AskAi
     </div>
 
     <button
-      class="nav-btn"
+      class="start-btn"
       onclick="startApp()"
     >
       Get Started
@@ -51,10 +54,8 @@
 
   </nav>
 
-  <!-- HERO -->
   <div class="hero">
 
-    <!-- LEFT -->
     <div class="hero-left">
 
       <h1>
@@ -63,37 +64,28 @@
       </h1>
 
       <p>
-        Your all-in-one AI assistant for
-        coding, learning, writing,
-        productivity, creativity and more.
+        Your intelligent AI assistant for
+        learning, coding, writing,
+        creativity and productivity.
       </p>
 
       <div class="hero-buttons">
 
         <button
-          class="primary-btn"
+          class="hero-btn"
           onclick="startApp()"
         >
           Get Started
         </button>
 
-        <button
-  class="secondary-btn"
-  onclick="document.getElementById('features').scrollIntoView({ behavior:'smooth' })"
->
-  Explore AI
-</button>
-
       </div>
 
     </div>
 
-    <!-- RIGHT -->
     <div class="hero-right">
 
       <img
-       <img src="logo.gif" class="hero-logo">
-        alt="AskAi Logo"
+        src="./logo.gif"
         class="hero-logo"
       />
 
@@ -101,67 +93,12 @@
 
   </div>
 
-  <!-- FEATURES -->
- <div id="features" class="features">
-
-    <div class="feature-card">
-      <div class="feature-icon">🤖</div>
-      <h3>Smart AI Chat</h3>
-      <p>
-        Ask anything and get
-        intelligent responses instantly.
-      </p>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon">💻</div>
-      <h3>Coding Assistant</h3>
-      <p>
-        Generate code, debug apps,
-        and learn programming faster.
-      </p>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon">📚</div>
-      <h3>Study Help</h3>
-      <p>
-        Notes, explanations,
-        summaries and exam preparation.
-      </p>
-    </div>
-
-    <div class="feature-card">
-      <div class="feature-icon">🎨</div>
-      <h3>Creative AI</h3>
-      <p>
-        Generate ideas, content,
-        designs and more.
-      </p>
-    </div>
-
-  </div>
-
-  <!-- CREATOR -->
-  <div class="creator-section">
-
-    <h2>
-      Crafted with ❤️ by
-      Govind Vaishnav 🧿
-    </h2>
-
-  </div>
-
 </section>
 
-<!-- ========================= -->
 <!-- MAIN APP -->
-<!-- ========================= -->
-
 <div
   class="app"
-  id="mainApp"
-  style="display:none;"
+  id="app"
 >
 
   <!-- SIDEBAR -->
@@ -180,11 +117,6 @@
         + New Chat
       </button>
 
-      <div
-        id="historyList"
-        class="history-list"
-      ></div>
-
     </div>
 
     <div class="sidebar-footer">
@@ -200,22 +132,6 @@
     <div class="topbar">
 
       <span>AskAi</span>
-
-      <select id="modelSelect">
-
-        <option value="mistral">
-          Mistral
-        </option>
-
-        <option value="deepseek">
-          DeepSeek
-        </option>
-
-        <option value="llama">
-          Llama
-        </option>
-
-      </select>
 
     </div>
 
@@ -235,20 +151,6 @@
           rows="1"
           placeholder="Message AskAi..."
         ></textarea>
-
-        <!-- FILE -->
-        <label
-          for="fileInput"
-          class="icon-btn"
-        >
-          📎
-        </label>
-
-        <input
-          type="file"
-          id="fileInput"
-          hidden
-        />
 
         <!-- VOICE -->
         <button
@@ -278,22 +180,6 @@
 <footer class="footer">
   Made with ❤️ by Govind Vaishnav 🧿
 </footer>
-
-<script>
-
-function startApp(){
-
-  document.getElementById(
-    "landingPage"
-  ).style.display = "none";
-
-  document.getElementById(
-    "mainApp"
-  ).style.display = "flex";
-
-}
-
-</script>
 
 <script src="script.js"></script>
 
