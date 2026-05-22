@@ -28,8 +28,10 @@
 
 <body>
 
-<!-- LANDING PAGE -->
-<!-- LOADING -->
+<!-- =========================
+LOADING SCREEN
+========================= -->
+
 <div id="loadingScreen">
 
   <div class="loader-circle"></div>
@@ -37,124 +39,149 @@
   <h2>Preparing AskAi...</h2>
 
 </div>
-  <section id="landingPage">
 
+<!-- =========================
+LANDING PAGE
+========================= -->
 
- <!-- NAVBAR -->
-<nav class="navbar">
+<section id="landingPage">
 
-  <div class="logo">
-    ✨ AskAi 👾
-  </div>
-
-  <div class="nav-right">
-
-    <!-- THEME SWITCH -->
-    <button
-      id="themeToggle"
-      class="theme-btn"
-    >
-      👾 Shastra
-    </button>
-
-    <!-- START -->
-    <button
-      class="start-btn"
-      onclick="startApp()"
-    >
-      Get Started
-    </button>
-
-  </div>
-
-</nav>
-
-  <!-- HERO -->
-  <div class="hero">
-
-  <div class="hero-left">
-
-    <h1 class="hero-title">
-      Your Friendly
-      <span>AI Companion</span>
-    </h1>
-
-    <p class="hero-subtitle">
-      Talk naturally, learn faster,
-      code smarter and explore ideas
-      with your personal AI friend.
-    </p>
-
-    <div class="hero-buttons">
-
-      <button
-        class="hero-btn"
-        onclick="startLoading()"
-      >
-        Get Started
-      </button>
-
-      <button
-        class="hero-btn secondary"
-        onclick="startLoading()"
-      >
-        Explore AI
-      </button>
-
-    </div>
-
-  </div>
-
-  <div class="hero-right">
-
-    <div class="ai-orb"></div>
-
-  </div>
-
-</div>
-
-</section>
-
-<!-- MAIN APP -->
-<div
-  class="app"
-  id="app"
->
-
-  
-  <!-- SIDEBAR -->
-<!-- SIDEBAR -->
-<aside class="sidebar">
-
-  <div>
+  <!-- NAVBAR -->
+  <nav class="navbar">
 
     <div class="logo">
       ✨ AskAi 👾
     </div>
 
-    <button
-      class="new-chat-btn"
-      onclick="newChat()"
-    >
-      + New Chat
-    </button>
+    <div class="nav-right">
 
-    <!-- RECENT -->
-    <div class="sidebar-section">
+      <!-- THEME -->
+      <button
+        id="themeBtn"
+        class="theme-btn"
+        onclick="toggleTheme()"
+      >
+        👾 Shastra
+      </button>
 
-      <h3>Recent Chats</h3>
+      <!-- START -->
+      <button
+        class="start-btn"
+        onclick="startLoading()"
+      >
+        Get Started
+      </button>
 
-      <div id="recentChats"></div>
+    </div>
+
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+
+    <!-- LEFT -->
+    <div class="hero-left">
+
+      <h1 class="hero-title">
+
+        Your Friendly
+
+        <span>
+          AI Companion
+        </span>
+
+      </h1>
+
+      <p class="hero-subtitle">
+
+        Learn faster, code smarter,
+        write better and talk naturally
+        with your personal AI friend.
+
+      </p>
+
+      <div class="hero-buttons">
+
+        <button
+          class="hero-btn"
+          onclick="startLoading()"
+        >
+          Get Started
+        </button>
+
+        <button
+          class="hero-btn secondary"
+          onclick="startLoading()"
+        >
+          Explore AI
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="hero-right">
+
+      <div class="ai-orb"></div>
 
     </div>
 
   </div>
-  <!-- FOOTER -->
-  <div class="sidebar-footer">
-    AskAi can make mistakes. please double check if possible.
-  </div>
 
-</aside>
+</section>
+
+<!-- =========================
+MAIN APP
+========================= -->
+
+<div
+  class="app"
+  id="app"
+>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div>
+
+      <!-- LOGO -->
+      <div class="logo">
+        ✨ AskAi 👾
+      </div>
+
+      <!-- NEW CHAT -->
+      <button
+        class="new-chat-btn"
+        onclick="newChat()"
+      >
+        + New Chat
+      </button>
+
+      <!-- RECENTS -->
+      <div class="sidebar-section">
+
+        <h3>
+          Recent Chats
+        </h3>
+
+        <div
+          id="recentChats"
+        ></div>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="sidebar-footer">
+
+      Made with ❤️ by 
+      Govind Vaishnav 🧿
+
+    </div>
+
+  </aside>
 
   <!-- MAIN -->
   <main class="main">
@@ -162,7 +189,9 @@
     <!-- TOPBAR -->
     <div class="topbar">
 
-      <span>AskAi</span>
+      <span>
+        AskAi
+      </span>
 
     </div>
 
@@ -208,12 +237,7 @@
 
 </div>
 
-<!-- FOOTER -->
-<footer class="footer">
-  Made with ❤️ by Govind Vaishnav 🧿
-</footer>
-
-<!-- SCRIPT -->
+<!-- JS -->
 <script src="script.js"></script>
 
 </body>
