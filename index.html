@@ -123,40 +123,73 @@
   id="app"
 >
 
-  <!-- SIDEBAR -->
   <aside class="sidebar">
 
-    <div>
+  <!-- TOP -->
+  <div>
 
-      <!-- LOGO -->
-      <div class="logo">
-
-        <img
-          src="logo.gif"
-          alt="logo"
-          class="logo-img"
-        />
-
-        <span>AskAi</span>
-
-      </div>
-
-      <!-- NEW CHAT -->
-      <button
-        class="new-chat-btn"
-        onclick="newChat()"
-      >
-        + New Chat
-      </button>
-
+    <!-- LOGO -->
+    <div class="logo">
+      <img src="logo.png" class="logo-img">
+      <span>AskAi</span>
     </div>
 
-    <!-- SIDEBAR FOOTER -->
-    <div class="sidebar-footer">
-      Made with ❤️ by GOVIND VAISHNAV 🧿
+    <!-- NEW CHAT -->
+    <button
+      class="new-chat-btn"
+      onclick="newChat()"
+    >
+      ✏️ New chat
+    </button>
+
+    <!-- SEARCH -->
+    <div class="sidebar-item">
+      🔍 Search chats
     </div>
 
-  </aside>
+    <!-- PROJECTS -->
+    <div class="sidebar-item">
+      📁 Projects
+    </div>
+
+    <!-- CODEX -->
+    <div class="sidebar-item">
+      ⚙️ Codex
+    </div>
+
+    <!-- MORE -->
+    <div class="sidebar-item">
+      ⋯ More
+    </div>
+
+    <!-- PINNED -->
+    <div class="sidebar-title">
+      Pinned
+    </div>
+
+    <div class="history-item active">
+      💬 AI Tutor Chatbot
+    </div>
+
+    <!-- RECENTS -->
+    <div class="sidebar-title">
+      Recents
+    </div>
+
+    <!-- HISTORY -->
+    <div
+      id="historyList"
+      class="history-list"
+    ></div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="sidebar-footer">
+    Made with ❤️ by GOVIND VAISHNAV 🧿
+  </div>
+
+</aside>
 
   <!-- MAIN -->
   <main class="main">
