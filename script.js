@@ -521,3 +521,141 @@ function loadHistory() {
 // INIT
 // =========================
 loadHistory();
+// =========================
+// THEME SWITCH
+// =========================
+
+const themeBtn =
+  document.getElementById("themeToggle");
+
+let darkMode = true;
+
+themeBtn.onclick = () => {
+
+  document.body.classList.toggle(
+    "light-theme"
+  );
+
+  darkMode = !darkMode;
+
+  if(darkMode){
+
+    themeBtn.innerHTML =
+      "👾 Shastra";
+
+  }else{
+
+    themeBtn.innerHTML =
+      "🤖 Ved";
+
+  }
+
+};
+
+// =========================
+// SEARCH CHAT
+// =========================
+
+const searchInput =
+  document.getElementById(
+    "searchChat"
+  );
+
+if(searchInput){
+
+  searchInput.addEventListener(
+    "input",
+    () => {
+
+      const value =
+        searchInput.value
+        .toLowerCase();
+
+      const items =
+        document.querySelectorAll(
+          ".history-item"
+        );
+
+      items.forEach((item)=>{
+
+        if(
+          item.innerText
+          .toLowerCase()
+          .includes(value)
+        ){
+
+          item.style.display =
+            "block";
+
+        }else{
+
+          item.style.display =
+            "none";
+
+        }
+
+      });
+
+    }
+  );
+
+}
+
+// =========================
+// PIN CHAT
+// =========================
+
+let pinnedChats = JSON.parse(
+  localStorage.getItem(
+    "askai_pins"
+  ) || "[]"
+);
+
+function pinChat(text){
+
+  if(
+    !pinnedChats.includes(text)
+  ){
+
+    pinnedChats.push(text);
+
+    localStorage.setItem(
+      "askai_pins",
+      JSON.stringify(pinnedChats)
+    );
+
+    renderPinned();
+
+  }
+
+}
+
+function renderPinned(){
+
+  const pinnedList =
+    document.getElementById(
+      "pinnedList"
+    );
+
+  if(!pinnedList) return;
+
+  pinnedList.innerHTML = "";
+
+  pinnedChats.forEach((chat)=>{
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "history-item";
+
+    item.innerHTML =
+      `📌 ${chat}`;
+
+    pinnedList.appendChild(item);
+
+  });
+
+}
+
+renderPinned();
