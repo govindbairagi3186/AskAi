@@ -541,3 +541,55 @@ textarea::placeholder{
   }
 
 }
+/* SIDEBAR ITEMS */
+.sidebar-item{
+  padding:14px;
+  border-radius:12px;
+  cursor:pointer;
+  margin-top:8px;
+  font-size:15px;
+  transition:0.2s;
+  color:#e5e7eb;
+}
+
+.sidebar-item:hover{
+  background:#2a2a2a;
+}
+
+.sidebar-title{
+  margin-top:22px;
+  margin-bottom:10px;
+  font-size:14px;
+  color:#9ca3af;
+  font-weight:600;
+}
+
+.active{
+  background:#2f2f2f;
+}
+
+/* HISTORY */
+.history-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-top:10px;
+  max-height:300px;
+  overflow-y:auto;
+}
+
+.history-item{
+  padding:12px;
+  border-radius:12px;
+  background:transparent;
+  cursor:pointer;
+  transition:0.2s;
+  font-size:14px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.history-item:hover{
+  background:#2a2a2a;
+}
