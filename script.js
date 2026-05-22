@@ -1,8 +1,7 @@
 // =========================
-// AskAi FINAL script.js
+// ELEMENTS
 // =========================
 
-// ELEMENTS
 const chatBox =
   document.getElementById("chatBox");
 
@@ -12,21 +11,32 @@ const topicInput =
 const voiceBtn =
   document.getElementById("voiceBtn");
 
+const searchInput =
+  document.getElementById("searchChats");
+
+const recentChats =
+  document.getElementById("recentChats");
+
+const pinnedChats =
+  document.getElementById("pinnedChats");
+
 // =========================
-// CHAT MEMORY
+// MEMORY
 // =========================
+
 let history = JSON.parse(
+  localStorage.getItem("askai_history") || "[]"
+);
 
-  localStorage.getItem(
-    "askai_history"
-  ) || "[]"
-
+let pinned = JSON.parse(
+  localStorage.getItem("askai_pinned") || "[]"
 );
 
 // =========================
 // START APP
 // =========================
-window.startApp = function () {
+
+function startApp() {
 
   document.getElementById(
     "landingPage"
@@ -36,11 +46,63 @@ window.startApp = function () {
     "app"
   ).style.display = "flex";
 
-};
+}
+
+// =========================
+// THEME SWITCH
+// =========================
+
+function toggleTheme() {
+
+  document.body.classList.toggle(
+    "light-theme"
+  );
+
+  const btn =
+    document.getElementById("themeBtn");
+
+  if (
+    document.body.classList.contains(
+      "light-theme"
+    )
+  ) {
+
+    btn.innerText = "Ved🤖";
+
+    localStorage.setItem(
+      "askai_theme",
+      "light"
+    );
+
+  } else {
+
+    btn.innerText = "Shastra👾";
+
+    localStorage.setItem(
+      "askai_theme",
+      "dark"
+    );
+
+  }
+
+}
+
+// LOAD THEME
+const savedTheme =
+  localStorage.getItem("askai_theme");
+
+if (savedTheme === "light") {
+
+  document.body.classList.add(
+    "light-theme"
+  );
+
+}
 
 // =========================
 // AUTO RESIZE
 // =========================
+
 topicInput?.addEventListener(
   "input",
   () => {
@@ -55,8 +117,9 @@ topicInput?.addEventListener(
 );
 
 // =========================
-// ENTER TO SEND
+// ENTER SEND
 // =========================
+
 topicInput?.addEventListener(
   "keydown",
   (e) => {
@@ -76,22 +139,19 @@ topicInput?.addEventListener(
 );
 
 // =========================
-// VOICE INPUT
+// VOICE
 // =========================
+
 const SpeechRecognition =
-
   window.SpeechRecognition ||
-
   window.webkitSpeechRecognition;
 
-if (SpeechRecognition && voiceBtn) {
+if (SpeechRecognition) {
 
   const recognition =
     new SpeechRecognition();
 
   recognition.lang = "en-US";
-
-  recognition.continuous = false;
 
   voiceBtn.onclick = () => {
 
@@ -104,14 +164,7 @@ if (SpeechRecognition && voiceBtn) {
   recognition.onresult = (e) => {
 
     topicInput.value =
-
       e.results[0][0].transcript;
-
-    voiceBtn.innerText = "🎤";
-
-  };
-
-  recognition.onerror = () => {
 
     voiceBtn.innerText = "🎤";
 
@@ -122,6 +175,7 @@ if (SpeechRecognition && voiceBtn) {
 // =========================
 // NEW CHAT
 // =========================
+
 function newChat() {
 
   history = [];
@@ -134,29 +188,32 @@ function newChat() {
 
   addWelcomeMessage();
 
+  loadRecentChats();
+
 }
 
 // =========================
-// WELCOME MESSAGE
+// WELCOME
 // =========================
+
 function addWelcomeMessage() {
 
   addAIMessage(`
 # 👋 Welcome to AskAi
 
-Your premium AI assistant.
+Your intelligent AI assistant.
 
 Capabilities:
 
 - 🤖 AI Chat
-- 💻 Coding Help
-- 📚 Study Notes
+- 💻 Coding
+- 📚 Study
 - ✍️ Writing
-- 🌍 General Knowledge
-- 📈 Business Ideas
-- 🎨 Creative Thinking
+- 🌍 Knowledge
+- 📈 Business
+- 🎨 Creativity
 
-Ask me anything.
+Ask anything.
   `);
 
 }
@@ -164,15 +221,16 @@ Ask me anything.
 // =========================
 // USER MESSAGE
 // =========================
+
 function addUserMessage(text) {
 
-  const msg =
+  const div =
     document.createElement("div");
 
-  msg.className =
+  div.className =
     "message user";
 
-  msg.innerHTML = `
+  div.innerHTML = `
 
     <div class="bubble">
       ${formatText(text)}
@@ -184,7 +242,7 @@ function addUserMessage(text) {
 
   `;
 
-  chatBox.appendChild(msg);
+  chatBox.appendChild(div);
 
   scrollBottom();
 
@@ -193,15 +251,16 @@ function addUserMessage(text) {
 // =========================
 // AI MESSAGE
 // =========================
+
 function addAIMessage(text) {
 
-  const msg =
+  const div =
     document.createElement("div");
 
-  msg.className =
+  div.className =
     "message ai";
 
-  msg.innerHTML = `
+  div.innerHTML = `
 
     <div class="avatar ai-avatar">
       AI
@@ -211,10 +270,10 @@ function addAIMessage(text) {
 
   `;
 
-  chatBox.appendChild(msg);
+  chatBox.appendChild(div);
 
   const bubble =
-    msg.querySelector(".ai-text");
+    div.querySelector(".ai-text");
 
   typeText(
     bubble,
@@ -228,6 +287,7 @@ function addAIMessage(text) {
 // =========================
 // TYPE EFFECT
 // =========================
+
 function typeText(el, text) {
 
   let i = 0;
@@ -237,12 +297,9 @@ function typeText(el, text) {
     if (i < text.length) {
 
       el.innerHTML =
-
         text.slice(0, i) + "▌";
 
       i++;
-
-      scrollBottom();
 
       setTimeout(
         typing,
@@ -262,43 +319,15 @@ function typeText(el, text) {
 }
 
 // =========================
-// FORMAT TEXT
+// FORMAT
 // =========================
+
 function formatText(text) {
 
   return text
 
     .replace(/</g, "&lt;")
-
     .replace(/>/g, "&gt;")
-
-    .replace(
-
-      /```([\s\S]*?)```/g,
-
-      "<pre><code>$1</code></pre>"
-
-    )
-
-    .replace(
-      /^# (.*$)/gim,
-      "<h1>$1</h1>"
-    )
-
-    .replace(
-      /^## (.*$)/gim,
-      "<h2>$1</h2>"
-    )
-
-    .replace(
-      /^### (.*$)/gim,
-      "<h3>$1</h3>"
-    )
-
-    .replace(
-      /\*\*(.*?)\*\*/g,
-      "<b>$1</b>"
-    )
 
     .replace(
       /\n/g,
@@ -310,6 +339,7 @@ function formatText(text) {
 // =========================
 // THINKING
 // =========================
+
 function showThinking() {
 
   const t =
@@ -327,13 +357,7 @@ function showThinking() {
     </div>
 
     <div class="bubble">
-
-      <div class="typing">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
+      Thinking...
     </div>
 
   `;
@@ -344,9 +368,6 @@ function showThinking() {
 
 }
 
-// =========================
-// REMOVE THINKING
-// =========================
 function removeThinking() {
 
   const t =
@@ -359,8 +380,9 @@ function removeThinking() {
 }
 
 // =========================
-// MAIN AI FUNCTION
+// MAIN AI
 // =========================
+
 async function learnTopic() {
 
   const text =
@@ -372,9 +394,6 @@ async function learnTopic() {
 
   topicInput.value = "";
 
-  topicInput.style.height =
-    "auto";
-
   showThinking();
 
   try {
@@ -385,10 +404,8 @@ async function learnTopic() {
         method: "POST",
 
         headers: {
-
           "Content-Type":
-            "application/json"
-
+          "application/json"
         },
 
         body: JSON.stringify({
@@ -410,34 +427,24 @@ async function learnTopic() {
       data.result
     );
 
-    // SAVE USER
     history.push({
-
-      role: "user",
-
-      content: text
-
+      role:"user",
+      content:text
     });
 
-    // SAVE AI
     history.push({
-
-      role: "assistant",
-
-      content: data.result
-
+      role:"assistant",
+      content:data.result
     });
 
-    // SAVE MEMORY
     localStorage.setItem(
-
       "askai_history",
-
       JSON.stringify(history)
-
     );
 
-  } catch (error) {
+    loadRecentChats();
+
+  } catch(error) {
 
     removeThinking();
 
@@ -445,30 +452,167 @@ async function learnTopic() {
 # ❌ Error
 
 Something went wrong.
-
-Please try again.
     `);
-
-    console.log(error);
 
   }
 
 }
 
 // =========================
+// RECENT CHATS
+// =========================
+
+function loadRecentChats() {
+
+  if (!recentChats) return;
+
+  recentChats.innerHTML = "";
+
+  const chats =
+    history.filter(
+      x => x.role === "user"
+    );
+
+  chats
+    .slice()
+    .reverse()
+    .forEach((msg) => {
+
+      const item =
+        document.createElement("div");
+
+      item.className =
+        "sidebar-item";
+
+      item.innerHTML = `
+        💬 ${msg.content.slice(0,25)}
+      `;
+
+      item.onclick = () => {
+
+        topicInput.value =
+          msg.content;
+
+      };
+
+      // PIN BUTTON
+      const pin =
+        document.createElement("span");
+
+      pin.innerHTML = "📌";
+
+      pin.style.float = "right";
+
+      pin.onclick = (e) => {
+
+        e.stopPropagation();
+
+        pinned.push(msg.content);
+
+        localStorage.setItem(
+          "askai_pinned",
+          JSON.stringify(pinned)
+        );
+
+        loadPinnedChats();
+
+      };
+
+      item.appendChild(pin);
+
+      recentChats.appendChild(item);
+
+    });
+
+}
+
+// =========================
+// PINNED
+// =========================
+
+function loadPinnedChats() {
+
+  if (!pinnedChats) return;
+
+  pinnedChats.innerHTML = "";
+
+  pinned.forEach((chat) => {
+
+    const item =
+      document.createElement("div");
+
+    item.className =
+      "sidebar-item";
+
+    item.innerHTML =
+      `📌 ${chat.slice(0,25)}`;
+
+    item.onclick = () => {
+
+      topicInput.value = chat;
+
+    };
+
+    pinnedChats.appendChild(item);
+
+  });
+
+}
+
+// =========================
+// SEARCH
+// =========================
+
+searchInput?.addEventListener(
+  "input",
+  () => {
+
+    const value =
+      searchInput.value.toLowerCase();
+
+    const items =
+      document.querySelectorAll(
+        ".sidebar-item"
+      );
+
+    items.forEach((item) => {
+
+      if (
+        item.innerText
+          .toLowerCase()
+          .includes(value)
+      ) {
+
+        item.style.display =
+          "block";
+
+      } else {
+
+        item.style.display =
+          "none";
+
+      }
+
+    });
+
+  }
+);
+
+// =========================
 // SCROLL
 // =========================
+
 function scrollBottom() {
 
   chatBox.scrollTop =
-
     chatBox.scrollHeight;
 
 }
 
 // =========================
-// LOAD HISTORY
+// LOAD CHAT
 // =========================
+
 function loadHistory() {
 
   chatBox.innerHTML = "";
@@ -485,177 +629,28 @@ function loadHistory() {
 
     if (msg.role === "user") {
 
-      addUserMessage(msg.content);
+      addUserMessage(
+        msg.content
+      );
 
     } else {
 
-      const aiMsg =
-        document.createElement("div");
-
-      aiMsg.className =
-        "message ai";
-
-      aiMsg.innerHTML = `
-
-        <div class="avatar ai-avatar">
-          AI
-        </div>
-
-        <div class="bubble">
-          ${formatText(msg.content)}
-        </div>
-
-      `;
-
-      chatBox.appendChild(aiMsg);
+      addAIMessage(
+        msg.content
+      );
 
     }
 
   });
-
-  scrollBottom();
 
 }
 
 // =========================
 // INIT
 // =========================
+
 loadHistory();
-// =========================
-// THEME SWITCH
-// =========================
 
-const themeBtn =
-  document.getElementById("themeToggle");
+loadRecentChats();
 
-let darkMode = true;
-
-themeBtn.onclick = () => {
-
-  document.body.classList.toggle(
-    "light-theme"
-  );
-
-  darkMode = !darkMode;
-
-  if(darkMode){
-
-    themeBtn.innerHTML =
-      "👾 Shastra";
-
-  }else{
-
-    themeBtn.innerHTML =
-      "🤖 Ved";
-
-  }
-
-};
-
-// =========================
-// SEARCH CHAT
-// =========================
-
-const searchInput =
-  document.getElementById(
-    "searchChat"
-  );
-
-if(searchInput){
-
-  searchInput.addEventListener(
-    "input",
-    () => {
-
-      const value =
-        searchInput.value
-        .toLowerCase();
-
-      const items =
-        document.querySelectorAll(
-          ".history-item"
-        );
-
-      items.forEach((item)=>{
-
-        if(
-          item.innerText
-          .toLowerCase()
-          .includes(value)
-        ){
-
-          item.style.display =
-            "block";
-
-        }else{
-
-          item.style.display =
-            "none";
-
-        }
-
-      });
-
-    }
-  );
-
-}
-
-// =========================
-// PIN CHAT
-// =========================
-
-let pinnedChats = JSON.parse(
-  localStorage.getItem(
-    "askai_pins"
-  ) || "[]"
-);
-
-function pinChat(text){
-
-  if(
-    !pinnedChats.includes(text)
-  ){
-
-    pinnedChats.push(text);
-
-    localStorage.setItem(
-      "askai_pins",
-      JSON.stringify(pinnedChats)
-    );
-
-    renderPinned();
-
-  }
-
-}
-
-function renderPinned(){
-
-  const pinnedList =
-    document.getElementById(
-      "pinnedList"
-    );
-
-  if(!pinnedList) return;
-
-  pinnedList.innerHTML = "";
-
-  pinnedChats.forEach((chat)=>{
-
-    const item =
-      document.createElement("div");
-
-    item.className =
-      "history-item";
-
-    item.innerHTML =
-      `📌 ${chat}`;
-
-    pinnedList.appendChild(item);
-
-  });
-
-}
-
-renderPinned();
+loadPinnedChats();
