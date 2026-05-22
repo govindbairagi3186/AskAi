@@ -29,9 +29,17 @@
 <body>
 
 <!-- LANDING PAGE -->
-<section id="landingPage">
+<!-- LOADING -->
+<div id="loadingScreen">
 
-  <!-- NAVBAR -->
+  <div class="loader-circle"></div>
+
+  <h2>Preparing AskAi...</h2>
+
+</div>
+  <section id="landingPage">
+
+
  <!-- NAVBAR -->
 <nav class="navbar">
 
@@ -64,33 +72,46 @@
   <!-- HERO -->
   <div class="hero">
 
-    <div class="hero-left">
+  <div class="hero-left">
 
-      <h1>
-        The Future of
-        <span>AI Assistance</span>
-      </h1>
+    <h1 class="hero-title">
+      Your Friendly
+      <span>AI Companion</span>
+    </h1>
 
-      <p>
-        Your intelligent AI assistant for
-        learning, coding, writing,
-        creativity and productivity.
-      </p>
+    <p class="hero-subtitle">
+      Talk naturally, learn faster,
+      code smarter and explore ideas
+      with your personal AI friend.
+    </p>
 
-      <div class="hero-buttons">
+    <div class="hero-buttons">
 
-        <button
-          class="hero-btn"
-          onclick="startApp()"
-        >
-          Explore AI
-        </button>
+      <button
+        class="hero-btn"
+        onclick="startLoading()"
+      >
+        Get Started
+      </button>
 
-      </div>
+      <button
+        class="hero-btn secondary"
+        onclick="startLoading()"
+      >
+        Explore AI
+      </button>
 
     </div>
 
   </div>
+
+  <div class="hero-right">
+
+    <div class="ai-orb"></div>
+
+  </div>
+
+</div>
 
 </section>
 
@@ -100,64 +121,37 @@
   id="app"
 >
 
+  
   <!-- SIDEBAR -->
-  <!-- SIDEBAR -->
+<!-- SIDEBAR -->
 <aside class="sidebar">
 
   <div>
 
-    <!-- LOGO -->
     <div class="logo">
       ✨ AskAi 👾
     </div>
 
-    <!-- NEW CHAT -->
-    <div
-      class="sidebar-item"
+    <button
+      class="new-chat-btn"
       onclick="newChat()"
     >
-      ✏️ New Chat
-    </div>
+      + New Chat
+    </button>
 
-    <!-- SEARCH -->
-    <div class="sidebar-item">
+    <!-- RECENT -->
+    <div class="sidebar-section">
 
-      🔍 Search Chats
+      <h3>Recent Chats</h3>
 
-      <input
-        type="text"
-        id="searchChat"
-        placeholder="Search..."
-        class="search-input"
-      />
+      <div id="recentChats"></div>
 
     </div>
-
-    <!-- PINNED -->
-    <div class="sidebar-title">
-      📌 Pinned Chats
-    </div>
-
-    <div
-      id="pinnedList"
-      class="history-list"
-    ></div>
-
-    <!-- RECENTS -->
-    <div class="sidebar-title">
-      🕒 Recent Chats
-    </div>
-
-    <div
-      id="historyList"
-      class="history-list"
-    ></div>
 
   </div>
-
   <!-- FOOTER -->
   <div class="sidebar-footer">
-    Made with ❤️ by GOVIND VAISHNAV 🧿
+    AskAi can make mistakes. please double check if possible.
   </div>
 
 </aside>
