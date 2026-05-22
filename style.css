@@ -359,3 +359,18 @@ textarea{
   }
 
 }
+
+/* LOGO */
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:28px;
+  font-weight:700;
+}
+
+.logo-img{
+  width:42px;
+  height:42px;
+  object-fit:contain;
+}
