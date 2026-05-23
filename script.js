@@ -8,11 +8,8 @@ const chatBox =
 const topicInput =
   document.getElementById("topic");
 
-xconst voiceBtn =
+const voiceBtn =
   document.getElementById("voiceBtn");
-
-const fileInput =
-  document.getElementById("fileInput");
 
 // =========================
 // APP START
@@ -177,45 +174,6 @@ if (SpeechRecognition) {
     voiceBtn.innerText = "🎤";
 
   };
-
-}
-// =========================
-// FILE UPLOAD
-// =========================
-
-if(fileInput){
-
-  fileInput.addEventListener("change",(e)=>{
-
-    const file = e.target.files[0];
-
-    if(!file) return;
-
-    // USER MESSAGE
-    addUserMessage(
-      `📎 Uploaded: ${file.name}`
-    );
-
-    // AI RESPONSE
-    setTimeout(()=>{
-
-      addAIMessage(
-`📂 File received successfully!
-
-File Name:
-${file.name}
-
-AskAi can now:
-• Read documents
-• Understand PDFs
-• Analyze images
-• Extract text
-• Help with notes`
-      );
-
-    },700);
-
-  });
 
 }
 
