@@ -43,7 +43,6 @@ export default async function handler(req, res) {
 
         try {
 
-          // IMPORTANT FIX
           const uploadedFile =
             files.file;
 
