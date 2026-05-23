@@ -1,6 +1,9 @@
 export default async function handler(req, res) {
 
+  // =========================
   // ALLOW ONLY POST
+  // =========================
+
   if (req.method !== "POST") {
 
     return res.status(405).json({
@@ -11,14 +14,20 @@ export default async function handler(req, res) {
 
   try {
 
+    // =========================
     // GET DATA
-    const {
-  topic,
-  history,
-  fileText
-} = req.body;
+    // =========================
 
-    // CHECK EMPTY MESSAGE
+    const {
+      topic,
+      history = [],
+      fileText = ""
+    } = req.body;
+
+    // =========================
+    // EMPTY MESSAGE CHECK
+    // =========================
+
     if (!topic) {
 
       return res.status(400).json({
@@ -27,7 +36,48 @@ export default async function handler(req, res) {
 
     }
 
+    // =========================
+    // SYSTEM PROMPT
+    // =========================
+
+    const systemPrompt = `
+
+You are AskAi.
+
+A smart, friendly and natural AI companion created by Govind Vaishnav.
+
+Behavior Rules:
+
+- Talk like a helpful neighbourhood friend.
+- Be warm, conversational and human-like.
+- Explain things simply.
+- Help in studies, coding, writing and general questions.
+- If uploaded file content exists, answer using that file.
+- Keep responses clean and readable.
+- Avoid robotic tone.
+
+`;
+
+    // =========================
+    // FILE CONTEXT
+    // =========================
+
+    const fileContext = fileText
+      ? `
+
+Uploaded File Content:
+
+${fileText.slice(0,12000)}
+
+Use this uploaded file to answer the user's questions whenever relevant.
+
+`
+      : "";
+
+    // =========================
     // OPENROUTER REQUEST
+    // =========================
+
     const response = await fetch(
 
       "https://openrouter.ai/api/v1/chat/completions",
@@ -59,17 +109,20 @@ export default async function handler(req, res) {
 
           messages: [
 
+            // SYSTEM
             {
 
               role: "system",
 
               content:
-"You are AskAi, a friendly neighbourhood AI friend created by Govind Vaishnav. Talk naturally like a helpful smart friend. Keep responses conversational, warm, simple and human-like."
+                systemPrompt + fileContext
 
             },
 
+            // CHAT HISTORY
             ...history,
 
+            // USER MESSAGE
             {
 
               role: "user",
@@ -86,12 +139,19 @@ export default async function handler(req, res) {
 
     );
 
-    // GET RESPONSE
-    const data = await response.json();
+    // =========================
+    // GET AI RESPONSE
+    // =========================
+
+    const data =
+      await response.json();
 
     console.log(data);
 
-    // HANDLE API ERROR
+    // =========================
+    // HANDLE API ERRORS
+    // =========================
+
     if (data.error) {
 
       return res.status(500).json({
@@ -104,7 +164,10 @@ export default async function handler(req, res) {
 
     }
 
+    // =========================
     // SEND AI MESSAGE
+    // =========================
+
     return res.status(200).json({
 
       result:
