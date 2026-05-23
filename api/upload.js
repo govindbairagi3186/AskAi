@@ -1,108 +1,124 @@
+import fs from "fs";
 import pdf from "pdf-parse";
 import mammoth from "mammoth";
-import fs from "fs";
-import path from "path";
 import formidable from "formidable";
 
-// Disable default body parser
+// Disable body parser
 export const config = {
   api: {
     bodyParser: false,
   },
 };
 
-export default async function handler(req,res){
+export default async function handler(req, res) {
 
-  const form =
-    formidable({});
+  if (req.method !== "POST") {
 
-  form.parse(
-    req,
-    async(err,fields,files)=>{
+    return res.status(405).json({
+      error: "Method not allowed",
+    });
 
-      try{
+  }
 
-        const file =
-          files.file[0];
+  const form = formidable({});
 
-        const filePath =
-          file.filepath;
+  form.parse(req, async (err, fields, files) => {
 
-        const ext =
-          path.extname(
-            file.originalFilename
-          ).toLowerCase();
+    try {
 
-        let text = "";
-
-        // PDF
-        if(ext === ".pdf"){
-
-          const dataBuffer =
-            fs.readFileSync(filePath);
-
-          const data =
-            await pdf(dataBuffer);
-
-          text = data.text;
-
-        }
-
-        // DOCX
-        else if(ext === ".docx"){
-
-          const result =
-            await mammoth.extractRawText({
-              path:filePath
-            });
-
-          text = result.value;
-
-        }
-
-        // TXT
-        else if(ext === ".txt"){
-
-          text =
-            fs.readFileSync(
-              filePath,
-              "utf8"
-            );
-
-        }
-
-        // IMAGE
-        else if(
-          ext === ".png" ||
-          ext === ".jpg" ||
-          ext === ".jpeg"
-        ){
-
-          text =
-            "Image uploaded. Vision AI coming soon.";
-
-        }
-
-        else{
-
-          text =
-            "Unsupported file type.";
-
-        }
-
-        return res.status(200).json({
-          text
-        });
-
-      }catch(error){
+      if (err) {
 
         return res.status(500).json({
-          error:error.message
+          error: "File upload error",
         });
 
       }
 
+      const file =
+        files.file[0];
+
+      const filepath =
+        file.filepath;
+
+      const filename =
+        file.originalFilename;
+
+      let text = "";
+
+      // PDF
+      if (filename.endsWith(".pdf")) {
+
+        const dataBuffer =
+          fs.readFileSync(filepath);
+
+        const data =
+          await pdf(dataBuffer);
+
+        text = data.text;
+
+      }
+
+      // DOCX
+      else if (
+        filename.endsWith(".docx")
+      ) {
+
+        const result =
+          await mammoth.extractRawText({
+            path: filepath,
+          });
+
+        text = result.value;
+
+      }
+
+      // TXT
+      else if (
+        filename.endsWith(".txt")
+      ) {
+
+        text =
+          fs.readFileSync(
+            filepath,
+            "utf8"
+          );
+
+      }
+
+      // IMAGE
+      else if (
+        filename.endsWith(".png") ||
+        filename.endsWith(".jpg") ||
+        filename.endsWith(".jpeg")
+      ) {
+
+        text =
+          "Image uploaded successfully.";
+
+      }
+
+      else {
+
+        text =
+          "Unsupported file type.";
+
+      }
+
+      return res.status(200).json({
+        text,
+      });
+
+    } catch (error) {
+
+      console.log(error);
+
+      return res.status(500).json({
+        error:
+          "Failed to analyze file",
+      });
+
     }
-  );
+
+  });
 
 }
