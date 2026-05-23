@@ -13,9 +13,10 @@ export default async function handler(req, res) {
 
     // GET DATA
     const {
-      topic,
-      history = []
-    } = req.body;
+  topic,
+  history,
+  fileText
+} = req.body;
 
     // CHECK EMPTY MESSAGE
     if (!topic) {
