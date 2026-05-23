@@ -11,6 +11,15 @@ const topicInput =
 const voiceBtn =
   document.getElementById("voiceBtn");
 
+const fileInput =
+  document.getElementById("fileInput");
+
+// =========================
+// FILE MEMORY
+// =========================
+
+let uploadedFileText = "";
+
 // =========================
 // APP START
 // =========================
@@ -178,6 +187,77 @@ if (SpeechRecognition) {
 }
 
 // =========================
+// FILE UPLOAD
+// =========================
+
+if(fileInput){
+
+  fileInput.addEventListener(
+    "change",
+    async (e)=>{
+
+      const file =
+        e.target.files[0];
+
+      if(!file) return;
+
+      addUserMessage(
+        `📎 Uploaded: ${file.name}`
+      );
+
+      addAIMessage(
+        "📂 Analyzing file..."
+      );
+
+      const formData =
+        new FormData();
+
+      formData.append(
+        "file",
+        file
+      );
+
+      try{
+
+        const response =
+          await fetch(
+            "/api/upload",
+            {
+              method:"POST",
+              body:formData
+            }
+          );
+
+        const data =
+          await response.json();
+
+        uploadedFileText =
+          data.text || "";
+
+        addAIMessage(
+`✅ File analyzed successfully!
+
+📄 ${file.name}
+
+You can now ask questions about this file.`
+        );
+
+      }catch(error){
+
+        addAIMessage(
+          "❌ Failed to analyze file."
+        );
+
+        console.log(error);
+
+      }
+
+    }
+  );
+
+}
+
+// =========================
 // HISTORY
 // =========================
 
@@ -269,6 +349,8 @@ function typeText(el, text) {
         text.slice(0, i) + "▌";
 
       i++;
+
+      scrollBottom();
 
       setTimeout(
         typing,
@@ -363,7 +445,10 @@ async function learnTopic() {
 
           topic: text,
 
-          history
+          history,
+
+          fileText:
+          uploadedFileText
 
         })
 
@@ -402,6 +487,8 @@ async function learnTopic() {
     addAIMessage(
       "Something went wrong."
     );
+
+    console.log(error);
 
   }
 
@@ -463,6 +550,8 @@ function loadRecentChats() {
 function newChat() {
 
   history = [];
+
+  uploadedFileText = "";
 
   localStorage.removeItem(
     "askai_history"
