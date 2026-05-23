@@ -12,13 +12,11 @@
 
   <title>AskAi</title>
 
-  <!-- FONT -->
   <link
     href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
     rel="stylesheet"
   />
 
-  <!-- CSS -->
   <link
     rel="stylesheet"
     href="style.css"
@@ -26,104 +24,45 @@
 
 </head>
 
-<body>
+<body class="dark">
 
-<!-- =========================
-LOADING SCREEN
-========================= -->
-
-<div id="loadingScreen">
-
-  <div class="loader-circle"></div>
-
-  <h2>Preparing AskAi...</h2>
-
-</div>
-
-<!-- =========================
-LANDING PAGE
-========================= -->
-
+<!-- FRONT PAGE -->
 <section id="landingPage">
 
-  <!-- NAVBAR -->
-  <nav class="navbar">
+  <!-- THEME BUTTON -->
+  <button
+    id="themeToggle"
+    class="theme-btn"
+  >
+    👾 Shastra
+  </button>
 
-    <div class="logo">
-      ✨ AskAi 👾
-    </div>
+  <div class="hero">
 
-    <div class="nav-right">
+    <h1>
+      AskAi
+    </h1>
 
-      <!-- THEME -->
+    <p>
+      Your intelligent AI friend for chatting,
+      learning, coding, writing and creativity.
+    </p>
+
+    <div class="hero-buttons">
+
       <button
-        id="themeBtn"
-        class="theme-btn"
-        onclick="toggleTheme()"
-      >
-        👾 Shastra
-      </button>
-
-      <!-- START -->
-      <button
-        class="start-btn"
-        onclick="startLoading()"
+        class="hero-btn"
+        onclick="startApp()"
       >
         Get Started
       </button>
 
-    </div>
-
-  </nav>
-
-  <!-- HERO -->
-  <div class="hero">
-
-    <!-- LEFT -->
-    <div class="hero-left">
-
-      <h1 class="hero-title">
-
-        Your Friendly
-
-        <span>
-          AI Companion
-        </span>
-
-      </h1>
-
-      <p class="hero-subtitle">
-
-        Learn faster, code smarter,
-        write better and talk naturally
-        with your personal AI friend.
-
-      </p>
-
-      <div class="hero-buttons">
-
-        <button
-          class="hero-btn"
-          onclick="startLoading()"
-        >
-          Get Started
-        </button>
-
-        <button
-          class="hero-btn secondary"
-          onclick="startLoading()"
-        >
-          Explore AI
-        </button>
-
-      </div>
-
-    </div>
-
-    <!-- RIGHT -->
-    <div class="hero-right">
-
-      <div class="ai-orb"></div>
+      <button
+        class="hero-btn secondary"
+        onclick="startApp()"
+      >
+        Explore AI
+      </button>
 
     </div>
 
@@ -131,10 +70,16 @@ LANDING PAGE
 
 </section>
 
-<!-- =========================
-MAIN APP
-========================= -->
+<!-- LOADING SCREEN -->
+<div id="loader">
 
+  <div class="loader-circle"></div>
+
+  <h2>Loading AskAi...</h2>
+
+</div>
+
+<!-- MAIN APP -->
 <div
   class="app"
   id="app"
@@ -145,12 +90,10 @@ MAIN APP
 
     <div>
 
-      <!-- LOGO -->
       <div class="logo">
         ✨ AskAi 👾
       </div>
 
-      <!-- NEW CHAT -->
       <button
         class="new-chat-btn"
         onclick="newChat()"
@@ -158,27 +101,16 @@ MAIN APP
         + New Chat
       </button>
 
-      <!-- RECENTS -->
-      <div class="sidebar-section">
+      <h3 class="recent-title">
+        Recent Chats
+      </h3>
 
-        <h3>
-          Recent Chats
-        </h3>
-
-        <div
-          id="recentChats"
-        ></div>
-
-      </div>
+      <div id="historyList"></div>
 
     </div>
 
-    <!-- FOOTER -->
     <div class="sidebar-footer">
-
-      Made with ❤️ by 
-      Govind Vaishnav 🧿
-
+      Made with ❤️ by Govind Vaishnav 🧿
     </div>
 
   </aside>
@@ -189,27 +121,39 @@ MAIN APP
     <!-- TOPBAR -->
     <div class="topbar">
 
-      <span>
-        AskAi
-      </span>
+      <span>AskAi</span>
 
     </div>
 
     <!-- CHAT -->
     <div
-  id="chatBox"
-  class="chat-box"
-></div>
+      id="chatBox"
+      class="chat-box"
+    ></div>
 
-<!-- CHAT FOOTER -->
-<div class="chat-footer">
-  AskAi can make mistakes. Double Check if possible.
-</div>
+    <!-- FOOTER -->
+    <div class="chat-footer">
+      AskAi can make mistakes. Double Check if possible.
+    </div>
 
     <!-- INPUT -->
     <div class="input-wrapper">
 
       <div class="input-box">
+
+        <!-- FILE -->
+        <label
+          for="fileInput"
+          class="icon-btn"
+        >
+          📎
+        </label>
+
+        <input
+          type="file"
+          id="fileInput"
+          hidden
+        />
 
         <!-- TEXTAREA -->
         <textarea
@@ -242,7 +186,6 @@ MAIN APP
 
 </div>
 
-<!-- JS -->
 <script src="script.js"></script>
 
 </body>
