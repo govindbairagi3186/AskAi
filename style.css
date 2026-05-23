@@ -562,3 +562,165 @@ CHAT FOOTER
   padding-bottom:10px;
   padding-top:5px;
 }
+
+/* =========================
+LIGHT THEME
+========================= */
+
+body.light-theme{
+  background:#f3f4f6;
+  color:#111;
+}
+
+/* SIDEBAR */
+
+body.light-theme .sidebar{
+  background:#ffffff;
+  border-right:1px solid #d1d5db;
+}
+
+body.light-theme .logo{
+  color:#111;
+}
+
+body.light-theme .sidebar-footer{
+  color:#555;
+}
+
+body.light-theme .sidebar-section h3{
+  color:#111;
+}
+
+/* BUTTONS */
+
+body.light-theme .new-chat-btn{
+  background:#111;
+  color:white;
+}
+
+body.light-theme .new-chat-btn:hover{
+  background:#222;
+}
+
+/* MAIN */
+
+body.light-theme .main{
+  background:#f3f4f6;
+}
+
+body.light-theme .topbar{
+  background:white;
+  border-bottom:1px solid #d1d5db;
+  color:#111;
+}
+
+/* CHAT */
+
+body.light-theme .chat-box{
+  background:#f3f4f6;
+}
+
+/* USER */
+
+body.light-theme .user .bubble{
+  background:#111;
+  color:white;
+}
+
+/* AI */
+
+body.light-theme .ai .bubble{
+  background:white;
+  color:#111;
+  border:1px solid #d1d5db;
+}
+
+/* AVATARS */
+
+body.light-theme .ai-avatar{
+  background:#111;
+  color:white;
+}
+
+body.light-theme .user-avatar{
+  background:#ddd;
+  color:#111;
+}
+
+/* INPUT */
+
+body.light-theme .input-box{
+  background:white;
+  border:1px solid #d1d5db;
+}
+
+body.light-theme textarea{
+  color:#111;
+}
+
+body.light-theme textarea::placeholder{
+  color:#666;
+}
+
+/* ICON BUTTONS */
+
+body.light-theme .icon-btn{
+  background:#111;
+  color:white;
+}
+
+body.light-theme #sendBtn{
+  background:#111;
+  color:white;
+}
+
+/* RECENTS */
+
+body.light-theme .recent-item{
+  background:white;
+  color:#111;
+  border:1px solid #ddd;
+}
+
+body.light-theme .recent-item:hover{
+  background:#eee;
+}
+
+/* LANDING PAGE */
+
+body.light-theme #landingPage{
+  background:#f3f4f6;
+  color:#111;
+}
+
+body.light-theme .navbar{
+  background:#f3f4f6;
+}
+
+body.light-theme .hero-subtitle{
+  color:#444;
+}
+
+body.light-theme .secondary{
+  background:#ddd;
+  color:#111;
+}
+
+/* AI ORB */
+
+body.light-theme .ai-orb{
+  background:
+  radial-gradient(circle,
+  #8b5cf6,
+  #d8b4fe);
+}
+
+/* FOOTERS */
+
+body.light-theme .chat-footer{
+  color:#666;
+}
+
+body.light-theme .sidebar-footer{
+  color:#666;
+}
