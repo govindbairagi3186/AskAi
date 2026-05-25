@@ -190,69 +190,114 @@ if (SpeechRecognition) {
 // FILE UPLOAD
 // =========================
 
-if(fileInput){
+// =========================
+// FILE UPLOAD
+// =========================
+
+if (fileInput) {
 
   fileInput.addEventListener(
+
     "change",
-    async (e)=>{
+
+    async (e) => {
 
       const file =
         e.target.files[0];
 
-      if(!file) return;
+      if (!file) return;
 
+      // SHOW USER MESSAGE
       addUserMessage(
         `📎 Uploaded: ${file.name}`
       );
 
+      // SHOW ANALYZING
       addAIMessage(
         "📂 Analyzing file..."
       );
 
-      const formData =
-        new FormData();
+      try {
 
-      formData.append(
-        "file",
-        file
-      );
+        // CREATE FORM DATA
+        const formData =
+          new FormData();
 
-      try{
+        formData.append(
+          "file",
+          file
+        );
 
+        // SEND FILE
         const response =
           await fetch(
+
             "/api/upload",
+
             {
-              method:"POST",
-              body:formData
+
+              method: "POST",
+
+              body: formData,
+
             }
+
           );
 
+        // GET RESPONSE
         const data =
           await response.json();
 
+        // HANDLE ERRORS
+        if (!response.ok) {
+
+          addAIMessage(
+
+            `❌ ${
+              data.error ||
+              "Failed to analyze file."
+            }`
+
+          );
+
+          return;
+
+        }
+
+        // SAVE FILE TEXT
         uploadedFileText =
           data.text || "";
 
+        // SUCCESS MESSAGE
         addAIMessage(
+
 `✅ File analyzed successfully!
 
 📄 ${file.name}
 
 You can now ask questions about this file.`
+
         );
 
-      }catch(error){
-
-        addAIMessage(
-          "❌ Failed to analyze file."
+        console.log(
+          "FILE TEXT:",
+          uploadedFileText
         );
+
+      } catch (error) {
 
         console.log(error);
+
+        addAIMessage(
+
+          "❌ Failed to analyze file."
+
+        );
 
       }
 
     }
+
   );
 
 }
