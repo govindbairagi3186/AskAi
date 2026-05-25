@@ -3,14 +3,23 @@ import pdf from "pdf-parse";
 import mammoth from "mammoth";
 import formidable from "formidable";
 
+// =========================
+// DISABLE BODY PARSER
+// =========================
+
 export const config = {
   api: {
     bodyParser: false,
   },
 };
 
+// =========================
+// MAIN API
+// =========================
+
 export default async function handler(req, res) {
 
+  // ONLY POST
   if (req.method !== "POST") {
 
     return res.status(405).json({
@@ -19,127 +28,198 @@ export default async function handler(req, res) {
 
   }
 
-  const form = formidable();
+  try {
 
-  form.parse(req, async (err, fields, files) => {
+    // =========================
+    // FORMIDABLE CONFIG
+    // =========================
 
-    try {
+    const form = formidable({
 
-      if (err) {
+      multiples: false,
 
-        console.log(err);
+      keepExtensions: true,
 
-        return res.status(500).json({
-          error: "Upload failed",
-        });
+    });
 
-      }
+    // =========================
+    // PARSE FILE
+    // =========================
 
-      // IMPORTANT FIX
-      const file =
-        files.file;
+    form.parse(
 
-      const uploaded =
-        Array.isArray(file)
-          ? file[0]
-          : file;
+      req,
 
-      if (!uploaded) {
+      async (err, fields, files) => {
 
-        return res.status(400).json({
-          error: "No file",
-        });
+        try {
 
-      }
+          // ERROR
+          if (err) {
 
-      const filepath =
-        uploaded.filepath;
+            console.log(err);
 
-      const filename =
-        uploaded.originalFilename;
+            return res.status(500).json({
+              error: "Upload failed",
+            });
 
-      let text = "";
+          }
 
-      // TXT
-      if (
-        filename.endsWith(".txt")
-      ) {
+          // =========================
+          // GET FILE
+          // =========================
 
-        text =
-          fs.readFileSync(
-            filepath,
-            "utf8"
-          );
+          const uploadedFile =
+            files.file;
 
-      }
+          const uploaded =
+            Array.isArray(uploadedFile)
+              ? uploadedFile[0]
+              : uploadedFile;
 
-      // PDF
-      else if (
-        filename.endsWith(".pdf")
-      ) {
+          // NO FILE
+          if (!uploaded) {
 
-        const dataBuffer =
-          fs.readFileSync(filepath);
+            return res.status(400).json({
+              error: "No file uploaded",
+            });
 
-        const pdfData =
-          await pdf(dataBuffer);
+          }
 
-        text =
-          pdfData.text;
+          // =========================
+          // FILE INFO
+          // =========================
 
-      }
+          const filepath =
+            uploaded.filepath;
 
-      // DOCX
-      else if (
-        filename.endsWith(".docx")
-      ) {
+          const filename =
+            uploaded.originalFilename
+              .toLowerCase();
 
-        const result =
-          await mammoth.extractRawText({
-            path: filepath,
+          let text = "";
+
+          // =========================
+          // TXT FILE
+          // =========================
+
+          if (
+            filename.endsWith(".txt")
+          ) {
+
+            text =
+              fs.readFileSync(
+                filepath,
+                "utf8"
+              );
+
+          }
+
+          // =========================
+          // PDF FILE
+          // =========================
+
+          else if (
+            filename.endsWith(".pdf")
+          ) {
+
+            const dataBuffer =
+              fs.readFileSync(filepath);
+
+            const pdfData =
+              await pdf(dataBuffer);
+
+            text =
+              pdfData.text;
+
+          }
+
+          // =========================
+          // DOCX FILE
+          // =========================
+
+          else if (
+            filename.endsWith(".docx")
+          ) {
+
+            const result =
+              await mammoth.extractRawText({
+
+                path: filepath,
+
+              });
+
+            text =
+              result.value;
+
+          }
+
+          // =========================
+          // IMAGE FILE
+          // =========================
+
+          else if (
+
+            filename.endsWith(".png") ||
+            filename.endsWith(".jpg") ||
+            filename.endsWith(".jpeg")
+
+          ) {
+
+            text =
+              "Image uploaded successfully.";
+
+          }
+
+          // =========================
+          // UNSUPPORTED
+          // =========================
+
+          else {
+
+            text =
+              "Unsupported file type.";
+
+          }
+
+          // =========================
+          // SEND RESPONSE
+          // =========================
+
+          return res.status(200).json({
+
+            text,
+
           });
 
-        text =
-          result.value;
+        } catch (error) {
+
+          console.log(error);
+
+          return res.status(500).json({
+
+            error:
+              error.message,
+
+          });
+
+        }
 
       }
 
-      // IMAGES
-      else if (
+    );
 
-        filename.endsWith(".png") ||
-        filename.endsWith(".jpg") ||
-        filename.endsWith(".jpeg")
+  } catch (error) {
 
-      ) {
+    console.log(error);
 
-        text =
-          "Image uploaded successfully.";
+    return res.status(500).json({
 
-      }
+      error:
+        "Server error",
 
-      else {
+    });
 
-        text =
-          "Unsupported file type.";
-
-      }
-
-      return res.status(200).json({
-        text,
-      });
-
-    } catch (error) {
-
-      console.log(error);
-
-      return res.status(500).json({
-        error:
-          error.message,
-      });
-
-    }
-
-  });
+  }
 
 }
