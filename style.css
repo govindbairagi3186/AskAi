@@ -724,3 +724,51 @@ body.light-theme .chat-footer{
 body.light-theme .sidebar-footer{
   color:#666;
 }
+/* =========================
+FILE UPLOAD BUTTON
+========================= */
+
+.file-label{
+
+  width:42px;
+  height:42px;
+
+  border-radius:50%;
+
+  background:#3a3a3a;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  cursor:pointer;
+
+  font-size:18px;
+
+  transition:.2s;
+
+}
+
+.file-label:hover{
+
+  transform:scale(1.05);
+
+  background:#4a4a4a;
+
+}
+
+#fileInput{
+
+  display:none;
+
+}
+
+/* LIGHT THEME */
+
+body.light-theme .file-label{
+
+  background:#111;
+
+  color:white;
+
+}
