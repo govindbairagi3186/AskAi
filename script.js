@@ -186,9 +186,6 @@ if (SpeechRecognition) {
 
 }
 
-// =========================
-// FILE UPLOAD
-// =========================
 
 // =========================
 // FILE UPLOAD
@@ -290,7 +287,7 @@ You can now ask questions about this file.`
 
         addAIMessage(
 
-          "❌ Failed to analyze file."
+          " 😅 Unable to Analyze Document."
 
         );
 
