@@ -312,7 +312,7 @@ textarea::placeholder{
 }
 
 /* MOBILE */
-@media(max-width:768px){
+@media(max-width:767px){
 
   .sidebar{
     display:none;
@@ -770,52 +770,5 @@ body.light-theme .file-label{
   background:#111;
 
   color:white;
-
-}
-/* =========================
-FRONT PAGE GIF LOGO
-========================= */
-
-.front-logo{
-
-  width:320px;
-
-  animation:
-  float 4s ease-in-out infinite;
-
-  filter:
-  drop-shadow(0 0 40px #8b5cf6);
-
-}
-
-/* =========================
-WATERMARK GIF
-========================= */
-
-.watermark-logo{
-
-  position:absolute;
-
-  top:15px;
-
-  right:20px;
-
-  width:80px;
-
-  opacity:0.08;
-
-  pointer-events:none;
-
-  z-index:1;
-
-  border-radius:20px;
-
-}
-
-/* MAIN FIX */
-
-.main{
-
-  position:relative;
 
 }
