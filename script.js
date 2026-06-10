@@ -2,35 +2,21 @@
 // ELEMENTS
 // =========================
 
-const chatBox =
-  document.getElementById("chatBox");
+const chatBox = document.getElementById("chatBox");
+const topicInput = document.getElementById("topic");
+const voiceBtn = document.getElementById("voiceBtn");
 
-const topicInput =
-  document.getElementById("topic");
+let chats =
+  JSON.parse(localStorage.getItem("askai_chats")) || [];
 
-const voiceBtn =
-  document.getElementById("voiceBtn");
-
-const fileInput =
-  document.getElementById("fileInput");
-
-// =========================
-// FILE MEMORY
-// =========================
-
-let uploadedFileText = "";
+let currentChat = [];
 
 // =========================
 // APP START
 // =========================
 
-// HIDE APP INITIALLY
 window.onload = () => {
-
-  document.getElementById(
-    "app"
-  ).style.display = "none";
-
+  document.getElementById("app").style.display = "none";
 };
 
 // =========================
@@ -38,116 +24,74 @@ window.onload = () => {
 // =========================
 
 function startLoading() {
-
   const loader =
-    document.getElementById(
-      "loadingScreen"
-    );
+    document.getElementById("loadingScreen");
 
-  loader.style.display =
-    "flex";
+  loader.style.display = "flex";
 
   setTimeout(() => {
-
-    loader.style.display =
-      "none";
-
+    loader.style.display = "none";
     startApp();
-
   }, 2200);
-
 }
-
-// =========================
-// START APP
-// =========================
 
 function startApp() {
+  document.getElementById("landingPage").style.display = "none";
+  document.getElementById("app").style.display = "flex";
 
-  document.getElementById(
-    "landingPage"
-  ).style.display = "none";
+  loadRecentChats();
 
-  document.getElementById(
-    "app"
-  ).style.display = "flex";
-
+  if (currentChat.length === 0) {
+    addAIMessage(
+      "👋 Hey buddy!\n\nI'm AskAi.\n\nAsk me anything."
+    );
+  }
 }
 
 // =========================
-// THEME SWITCH
+// THEME
 // =========================
 
 function toggleTheme() {
-
-  document.body.classList.toggle(
-    "light-theme"
-  );
+  document.body.classList.toggle("light-theme");
 
   const btn =
-    document.getElementById(
-      "themeBtn"
-    );
+    document.getElementById("themeBtn");
 
-  if (
+  btn.innerHTML =
     document.body.classList.contains(
       "light-theme"
     )
-  ) {
-
-    btn.innerHTML =
-      "🤖 Ved";
-
-  } else {
-
-    btn.innerHTML =
-      "👾 Shastra";
-
-  }
-
+      ? "🤖 Ved"
+      : "👾 Shastra";
 }
 
 // =========================
 // AUTO RESIZE
 // =========================
 
-topicInput?.addEventListener(
-  "input",
-  () => {
-
-    topicInput.style.height =
-      "auto";
-
-    topicInput.style.height =
-      topicInput.scrollHeight + "px";
-
-  }
-);
+topicInput.addEventListener("input", () => {
+  topicInput.style.height = "auto";
+  topicInput.style.height =
+    topicInput.scrollHeight + "px";
+});
 
 // =========================
 // ENTER SEND
 // =========================
 
-topicInput?.addEventListener(
+topicInput.addEventListener(
   "keydown",
   (e) => {
-
-    if (
-      e.key === "Enter" &&
-      !e.shiftKey
-    ) {
-
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-
       learnTopic();
-
     }
-
   }
 );
 
 // =========================
-// VOICE INPUT
+// VOICE
 // =========================
 
 const SpeechRecognition =
@@ -155,188 +99,57 @@ const SpeechRecognition =
   window.webkitSpeechRecognition;
 
 if (SpeechRecognition) {
-
   const recognition =
     new SpeechRecognition();
 
   recognition.lang = "en-US";
 
   voiceBtn.onclick = () => {
-
     recognition.start();
-
     voiceBtn.innerText = "🎙️";
-
   };
 
   recognition.onresult = (e) => {
-
     topicInput.value =
       e.results[0][0].transcript;
 
     voiceBtn.innerText = "🎤";
-
   };
 
   recognition.onerror = () => {
-
     voiceBtn.innerText = "🎤";
-
   };
-
 }
 
-
 // =========================
-// FILE UPLOAD
+// SAVE CHATS
 // =========================
 
-if (fileInput) {
-
-  fileInput.addEventListener(
-
-    "change",
-
-    async (e) => {
-
-      const file =
-        e.target.files[0];
-
-      if (!file) return;
-
-      // SHOW USER MESSAGE
-      addUserMessage(
-        `📎 Uploaded: ${file.name}`
-      );
-
-      // SHOW ANALYZING
-      addAIMessage(
-        "📂 Analyzing file..."
-      );
-
-      try {
-
-        // CREATE FORM DATA
-        const formData =
-          new FormData();
-
-        formData.append(
-          "file",
-          file
-        );
-
-        // SEND FILE
-        const response =
-          await fetch(
-
-            "/api/upload",
-
-            {
-
-              method: "POST",
-
-              body: formData,
-
-            }
-
-          );
-
-        // GET RESPONSE
-        const data =
-          await response.json();
-
-        // HANDLE ERRORS
-        if (!response.ok) {
-
-          addAIMessage(
-
-            `❌ ${
-              data.error ||
-              "Failed to analyze file."
-            }`
-
-          );
-
-          return;
-
-        }
-
-        // SAVE FILE TEXT
-        uploadedFileText =
-          data.text || "";
-
-        // SUCCESS MESSAGE
-        addAIMessage(
-
-`✅ File analyzed successfully!
-
-📄 ${file.name}
-
-You can now ask questions about this file.`
-
-        );
-
-        console.log(
-          "FILE TEXT:",
-          uploadedFileText
-        );
-
-      } catch (error) {
-
-        console.log(error);
-
-        addAIMessage(
-
-          " 😅 Unable to Analyze Document."
-
-        );
-
-      }
-
-    }
-
+function saveChats() {
+  localStorage.setItem(
+    "askai_chats",
+    JSON.stringify(chats)
   );
-
 }
-
-// =========================
-// HISTORY
-// =========================
-
-let history = JSON.parse(
-  localStorage.getItem(
-    "askai_history"
-  ) || "[]"
-);
 
 // =========================
 // USER MESSAGE
 // =========================
 
 function addUserMessage(text) {
-
   const msg =
     document.createElement("div");
 
-  msg.className =
-    "message user";
+  msg.className = "message user";
 
   msg.innerHTML = `
-
-    <div class="bubble">
-      ${text}
-    </div>
-
-    <div class="avatar user-avatar">
-      G
-    </div>
-
+    <div class="bubble">${text}</div>
+    <div class="avatar user-avatar">G</div>
   `;
 
   chatBox.appendChild(msg);
 
   scrollBottom();
-
 }
 
 // =========================
@@ -344,35 +157,24 @@ function addUserMessage(text) {
 // =========================
 
 function addAIMessage(text) {
-
   const msg =
     document.createElement("div");
 
-  msg.className =
-    "message ai";
+  msg.className = "message ai";
 
   msg.innerHTML = `
-
-    <div class="avatar ai-avatar">
-      AI
-    </div>
-
+    <div class="avatar ai-avatar">AI</div>
     <div class="bubble ai-text"></div>
-
   `;
 
   chatBox.appendChild(msg);
 
-  const bubble =
-    msg.querySelector(".ai-text");
-
   typeText(
-    bubble,
+    msg.querySelector(".ai-text"),
     text
   );
 
   scrollBottom();
-
 }
 
 // =========================
@@ -380,13 +182,10 @@ function addAIMessage(text) {
 // =========================
 
 function typeText(el, text) {
-
   let i = 0;
 
   function typing() {
-
     if (i < text.length) {
-
       el.innerHTML =
         text.slice(0, i) + "▌";
 
@@ -394,21 +193,13 @@ function typeText(el, text) {
 
       scrollBottom();
 
-      setTimeout(
-        typing,
-        5
-      );
-
+      setTimeout(typing, 5);
     } else {
-
       el.innerHTML = text;
-
     }
-
   }
 
   typing();
-
 }
 
 // =========================
@@ -416,50 +207,34 @@ function typeText(el, text) {
 // =========================
 
 function showThinking() {
-
-  const think =
+  const div =
     document.createElement("div");
 
-  think.id = "thinking";
+  div.id = "thinking";
 
-  think.className =
-    "message ai";
+  div.className = "message ai";
 
-  think.innerHTML = `
-
-    <div class="avatar ai-avatar">
-      AI
-    </div>
-
-    <div class="bubble">
-      Thinking...
-    </div>
-
+  div.innerHTML = `
+    <div class="avatar ai-avatar">AI</div>
+    <div class="bubble">Thinking...</div>
   `;
 
-  chatBox.appendChild(think);
+  chatBox.appendChild(div);
 
   scrollBottom();
-
 }
 
 function removeThinking() {
-
-  const think =
-    document.getElementById(
-      "thinking"
-    );
-
-  if (think) think.remove();
-
+  document
+    .getElementById("thinking")
+    ?.remove();
 }
 
 // =========================
-// MAIN AI
+// SEND MESSAGE
 // =========================
 
 async function learnTopic() {
-
   const text =
     topicInput.value.trim();
 
@@ -472,28 +247,19 @@ async function learnTopic() {
   showThinking();
 
   try {
-
     const response =
       await fetch("/api/tutor", {
-
         method: "POST",
 
         headers: {
           "Content-Type":
-          "application/json"
+            "application/json",
         },
 
         body: JSON.stringify({
-
           topic: text,
-
-          history,
-
-          fileText:
-          uploadedFileText
-
-        })
-
+          history: currentChat,
+        }),
       });
 
     const data =
@@ -501,29 +267,19 @@ async function learnTopic() {
 
     removeThinking();
 
-    addAIMessage(
-      data.result
-    );
+    addAIMessage(data.result);
 
-    history.push({
+    currentChat.push({
       role: "user",
-      content: text
+      content: text,
     });
 
-    history.push({
+    currentChat.push({
       role: "assistant",
-      content: data.result
+      content: data.result,
     });
-
-    localStorage.setItem(
-      "askai_history",
-      JSON.stringify(history)
-    );
-
-    loadRecentChats();
 
   } catch (error) {
-
     removeThinking();
 
     addAIMessage(
@@ -531,9 +287,41 @@ async function learnTopic() {
     );
 
     console.log(error);
+  }
+}
 
+// =========================
+// NEW CHAT
+// =========================
+
+function newChat() {
+
+  if (currentChat.length > 0) {
+
+    chats.unshift({
+      id: Date.now(),
+
+      title:
+        currentChat.find(
+          m => m.role === "user"
+        )?.content.substring(0, 40) ||
+        "New Chat",
+
+      messages: [...currentChat]
+    });
+
+    saveChats();
   }
 
+  currentChat = [];
+
+  chatBox.innerHTML = "";
+
+  addAIMessage(
+    "👋 Hey buddy!\n\nI'm AskAi.\n\nWhat would you like to talk about today?"
+  );
+
+  loadRecentChats();
 }
 
 // =========================
@@ -551,65 +339,53 @@ function loadRecentChats() {
 
   recent.innerHTML = "";
 
-  const chats =
-    history.filter(
-      x => x.role === "user"
-    );
+  chats.forEach(chat => {
 
-  chats
-    .slice()
-    .reverse()
-    .slice(0, 10)
-    .forEach((chat) => {
+    const item =
+      document.createElement("div");
 
-      const item =
-        document.createElement("div");
+    item.className =
+      "recent-item";
 
-      item.className =
-        "recent-item";
+    item.innerText =
+      "💬 " + chat.title;
 
-      item.innerHTML =
-        "💬 " +
-        chat.content.slice(0, 25);
+    item.onclick = () =>
+      openChat(chat.id);
 
-      item.onclick = () => {
+    recent.appendChild(item);
 
-        topicInput.value =
-          chat.content;
-
-      };
-
-      recent.appendChild(item);
-
-    });
+  });
 
 }
 
 // =========================
-// NEW CHAT
+// OPEN OLD CHAT
 // =========================
 
-function newChat() {
+function openChat(id) {
 
-  history = [];
+  const chat =
+    chats.find(
+      c => c.id === id
+    );
 
-  uploadedFileText = "";
+  if (!chat) return;
 
-  localStorage.removeItem(
-    "askai_history"
-  );
+  currentChat =
+    [...chat.messages];
 
   chatBox.innerHTML = "";
 
-  addAIMessage(`
-👋 Hey buddy!
+  currentChat.forEach(msg => {
 
-I'm AskAi.
+    if (msg.role === "user") {
+      addUserMessage(msg.content);
+    } else {
+      addAIMessage(msg.content);
+    }
 
-What do you want to talk about today?
-  `);
-
-  loadRecentChats();
+  });
 
 }
 
@@ -618,58 +394,12 @@ What do you want to talk about today?
 // =========================
 
 function scrollBottom() {
-
   chatBox.scrollTop =
     chatBox.scrollHeight;
-
-}
-
-// =========================
-// LOAD OLD CHATS
-// =========================
-
-function loadHistory() {
-
-  if (!history.length) {
-
-    addAIMessage(`
-👋 Hey buddy!
-
-I'm AskAi.
-
-Ask me anything.
-    `);
-
-    return;
-
-  }
-
-  history.forEach((msg) => {
-
-    if (
-      msg.role === "user"
-    ) {
-
-      addUserMessage(
-        msg.content
-      );
-
-    } else {
-
-      addAIMessage(
-        msg.content
-      );
-
-    }
-
-  });
-
 }
 
 // =========================
 // INIT
 // =========================
-
-loadHistory();
 
 loadRecentChats();
