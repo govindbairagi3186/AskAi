@@ -102,12 +102,32 @@ Use this uploaded file to answer the user's questions whenever relevant.
 
         },
 
-        body: JSON.stringify({
+       body: JSON.stringify({
 
-          model:
-            "openai/gpt-3.5-turbo",
+  model:
+    req.body.model || "openai/gpt-4.1-mini",
 
-          messages: [
+  temperature: 0.7,
+
+  max_tokens: 2000,
+
+  messages: [
+
+    {
+      role: "system",
+      content: systemPrompt + fileContext
+    },
+
+    ...history,
+
+    {
+      role: "user",
+      content: topic
+    }
+
+  ]
+
+})
 
             // SYSTEM
             {
@@ -143,26 +163,32 @@ Use this uploaded file to answer the user's questions whenever relevant.
     // GET AI RESPONSE
     // =========================
 
-    const data =
-      await response.json();
+   const data = await response.json();
 
-    console.log(data);
+if (!response.ok) {
 
-    // =========================
-    // HANDLE API ERRORS
-    // =========================
+    console.error(data);
 
-    if (data.error) {
-
-      return res.status(500).json({
+    return res.status(response.status).json({
 
         result:
-          data.error.message ||
-          "OpenRouter API Error"
+        data?.error?.message ||
+        "OpenRouter request failed."
 
-      });
+    });
 
-    }
+}
+
+if (!data.choices || !data.choices.length) {
+
+    return res.status(500).json({
+
+        result:
+        "No response received from the AI."
+
+    });
+
+}
 
     // =========================
     // SEND AI MESSAGE
@@ -170,13 +196,10 @@ Use this uploaded file to answer the user's questions whenever relevant.
 
     return res.status(200).json({
 
-      result:
+    result:
+    data.choices[0].message.content.trim()
 
-        data.choices?.[0]?.message?.content ||
-
-        "No response from AI."
-
-    });
+});
 
   } catch (error) {
 
