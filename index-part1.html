@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AskAi</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="icon" href="logo.gif">
+
+</head>
+
+<body>
+
+<!-- ===========================
+LOADING SCREEN
+=========================== -->
+
+<div id="loadingScreen">
+
+    <div class="loader">
+
+        <div class="loader-ring"></div>
+
+        <img src="logo.gif" class="loader-logo">
+
+    </div>
+
+    <h2>Preparing AskAi...</h2>
+
+    <p>Your AI companion is getting ready.</p>
+
+</div>
+
+<!-- ===========================
+LANDING PAGE
+=========================== -->
+
+<section id="landingPage">
+
+<nav class="navbar">
+
+<div class="logo-section">
+
+<img src="logo.gif" class="nav-logo">
+
+<div>
+
+<h2>AskAi</h2>
+
+<span>Your AI Companion</span>
+
+</div>
+
+</div>
+
+<div class="nav-buttons">
+
+<button id="themeBtn" class="theme-btn">
+
+🌙
+
+</button>
+
+<button class="login-btn">
+
+Login
+
+</button>
+
+<button class="start-btn" onclick="startLoading()">
+
+Get Started
+
+</button>
+
+</div>
+
+</nav>
+
+<div class="hero">
+
+<div class="hero-left">
+
+<div class="badge">
+
+✨ Powered by Artificial Intelligence
+
+</div>
+
+<h1>
+
+Learn.
+
+Create.
+
+Code.
+
+<span>Anything.</span>
+
+</h1>
+
+<p>
+
+AskAi is your personal AI assistant that helps you study,
+write code, summarize PDFs, save notes, answer questions,
+and improve your productivity.
+
+</p>
+
+<div class="hero-buttons">
+
+<button class="primary-btn" onclick="startLoading()">
+
+Start Chatting
+
+</button>
+
+<button class="secondary-btn">
+
+Explore Features
+
+</button>
+
+</div>
+
+<div class="hero-stats">
+
+<div class="stat">
+
+<h3>24/7</h3>
+
+<p>Available</p>
+
+</div>
+
+<div class="stat">
+
+<h3>100+</h3>
+
+<p>Languages</p>
+
+</div>
+
+<div class="stat">
+
+<h3>AI</h3>
+
+<p>Powered</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="hero-right">
+
+<div class="ai-circle">
+
+<div class="orbit orbit1"></div>
+
+<div class="orbit orbit2"></div>
+
+<div class="orbit orbit3"></div>
+
+<div class="core"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ===========================
+MAIN APPLICATION
+=========================== -->
+
+<div id="app" class="app">
+
+<aside class="sidebar">
+
+<div>
+
+<div class="sidebar-header">
+
+<img src="logo.gif" class="sidebar-logo">
+
+<div>
+
+<h3>AskAi</h3>
+
+<span>v2.0</span>
+
+</div>
+
+</div>
+
+<button class="new-chat-btn" onclick="newChat()">
+
+➕ New Chat
+
+</button>
+
+<div class="search-wrapper">
+
+<input
+type="text"
+id="searchChat"
+placeholder="Search chats...">
+
+</div>
+
+<nav class="menu">
+
+<div class="menu-title">
+
+Workspace
+
+</div>
+
+<button class="menu-item active">
+
+💬 AI Chat
+
+</button>
+
+<button class="menu-item">
+
+📄 PDF Chat
+
+</button>
+
+<button class="menu-item">
+
+📝 Notes
+
+</button>
+
+<button class="menu-item">
+
+📊 Dashboard
+
+</button>
+
+<button class="menu-item">
+
+⭐ Saved
+
+</button>
+
+<button class="menu-item">
+
+📜 History
+
+</button>
+
+</nav>
+
+<nav class="menu">
+
+<div class="menu-title">
+
+Management
+
+</div>
+
+<button class="menu-item">
+
+⚙ Settings
+
+</button>
+
+<button class="menu-item">
+
+👤 Profile
+
+</button>
+
+<button class="menu-item admin-only">
+
+🛠 Admin Panel
+
+</button>
+
+</nav>
+
+<div class="recent-section">
+
+<h4>
+
+Recent Chats
+
+</h4>
+
+<div id="recentChats">
+
+</div>
+
+</div>
+
+</div>
