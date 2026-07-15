@@ -3,223 +3,116 @@ import pdf from "pdf-parse";
 import mammoth from "mammoth";
 import formidable from "formidable";
 
-// =========================
-// DISABLE BODY PARSER
-// =========================
-
 export const config = {
   api: {
     bodyParser: false,
   },
 };
 
-// =========================
-// MAIN API
-// =========================
-
 export default async function handler(req, res) {
-
-  // ONLY POST
   if (req.method !== "POST") {
-
     return res.status(405).json({
+      success: false,
       error: "Method not allowed",
     });
-
   }
 
-  try {
+  const form = formidable({
+    multiples: false,
+    keepExtensions: true,
+    maxFileSize: 20 * 1024 * 1024, // 20MB
+  });
 
-    // =========================
-    // FORMIDABLE CONFIG
-    // =========================
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        error: err.message,
+      });
+    }
 
-    const form = formidable({
+    try {
+      const uploaded = Array.isArray(files.file)
+        ? files.file[0]
+        : files.file;
 
-      multiples: false,
-
-      keepExtensions: true,
-
-    });
-
-    // =========================
-    // PARSE FILE
-    // =========================
-
-    form.parse(
-
-      req,
-
-      async (err, fields, files) => {
-
-        try {
-
-          // ERROR
-          if (err) {
-
-            console.log(err);
-
-            return res.status(500).json({
-              error: "Upload failed",
-            });
-
-          }
-
-          // =========================
-          // GET FILE
-          // =========================
-
-          const uploadedFile =
-            files.file;
-
-          const uploaded =
-            Array.isArray(uploadedFile)
-              ? uploadedFile[0]
-              : uploadedFile;
-
-          // NO FILE
-          if (!uploaded) {
-
-            return res.status(400).json({
-              error: "No file uploaded",
-            });
-
-          }
-
-          // =========================
-          // FILE INFO
-          // =========================
-
-          const filepath =
-            uploaded.filepath;
-
-          const filename =
-            uploaded.originalFilename
-              .toLowerCase();
-
-          let text = "";
-
-          // =========================
-          // TXT FILE
-          // =========================
-
-          if (
-            filename.endsWith(".txt")
-          ) {
-
-            text =
-              fs.readFileSync(
-                filepath,
-                "utf8"
-              );
-
-          }
-
-          // =========================
-          // PDF FILE
-          // =========================
-
-          else if (
-            filename.endsWith(".pdf")
-          ) {
-
-            const dataBuffer =
-              fs.readFileSync(filepath);
-
-            const pdfData =
-              await pdf(dataBuffer);
-
-            text =
-              pdfData.text;
-
-          }
-
-          // =========================
-          // DOCX FILE
-          // =========================
-
-          else if (
-            filename.endsWith(".docx")
-          ) {
-
-            const result =
-              await mammoth.extractRawText({
-
-                path: filepath,
-
-              });
-
-            text =
-              result.value;
-
-          }
-
-          // =========================
-          // IMAGE FILE
-          // =========================
-
-          else if (
-
-            filename.endsWith(".png") ||
-            filename.endsWith(".jpg") ||
-            filename.endsWith(".jpeg")
-
-          ) {
-
-            text =
-              "Image uploaded successfully.";
-
-          }
-
-          // =========================
-          // UNSUPPORTED
-          // =========================
-
-          else {
-
-            text =
-              "Unsupported file type.";
-
-          }
-
-          // =========================
-          // SEND RESPONSE
-          // =========================
-
-          return res.status(200).json({
-
-            text,
-
-          });
-
-        } catch (error) {
-
-          console.log(error);
-
-          return res.status(500).json({
-
-            error:
-              error.message,
-
-          });
-
-        }
-
+      if (!uploaded) {
+        return res.status(400).json({
+          success: false,
+          error: "No file uploaded.",
+        });
       }
 
-    );
+      const filePath = uploaded.filepath;
+      const fileName = (uploaded.originalFilename || "").toLowerCase();
 
-  } catch (error) {
+      let extractedText = "";
+      let fileType = "";
 
-    console.log(error);
+      if (fileName.endsWith(".txt")) {
+        fileType = "text";
+        extractedText = fs.readFileSync(filePath, "utf8");
+      }
 
-    return res.status(500).json({
+      else if (fileName.endsWith(".pdf")) {
+        fileType = "pdf";
+        const buffer = fs.readFileSync(filePath);
+        const pdfData = await pdf(buffer);
+        extractedText = pdfData.text;
+      }
 
-      error:
-        "Server error",
+      else if (fileName.endsWith(".docx")) {
+        fileType = "docx";
+        const result = await mammoth.extractRawText({
+          path: filePath,
+        });
+        extractedText = result.value;
+      }
 
-    });
+      else if (
+        fileName.endsWith(".png") ||
+        fileName.endsWith(".jpg") ||
+        fileName.endsWith(".jpeg") ||
+        fileName.endsWith(".webp")
+      ) {
+        fileType = "image";
+        extractedText =
+          "Image uploaded successfully. OCR support will be added later.";
+      }
 
-  }
+      else {
+        fs.unlinkSync(filePath);
 
+        return res.status(400).json({
+          success: false,
+          error: "Unsupported file type.",
+        });
+      }
+
+      if (!extractedText.trim()) {
+        extractedText = "No readable text found.";
+      }
+
+      // Delete temp file
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+
+      return res.status(200).json({
+        success: true,
+        fileName: uploaded.originalFilename,
+        fileType,
+        characters: extractedText.length,
+        text: extractedText,
+      });
+
+    } catch (error) {
+      console.error(error);
+
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+  });
 }
