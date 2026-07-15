@@ -2,576 +2,636 @@
 <html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AskAi - Your AI Companion</title>
 
-<title>AskAi</title>
+    <meta name="description" content="AskAi - Study, Code, Write and Chat with AI">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" href="logo.gif">
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-<link rel="icon" href="logo.gif">
-
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- ===========================
-LOADING SCREEN
-=========================== -->
+<!-- ========================================= -->
+<!-- LOADING SCREEN -->
+<!-- ========================================= -->
 
-<div id="loadingScreen">
+<div id="loadingScreen" class="loading-screen">
 
     <div class="loader">
 
         <div class="loader-ring"></div>
 
-        <img src="logo.gif" class="loader-logo">
+        <img src="logo.gif" alt="AskAi Logo" class="loader-logo">
 
     </div>
 
     <h2>Preparing AskAi...</h2>
 
-    <p>Your AI companion is getting ready.</p>
+    <p>Your AI companion is getting everything ready.</p>
 
 </div>
 
-<!-- ===========================
-LANDING PAGE
-=========================== -->
+<!-- ========================================= -->
+<!-- LANDING PAGE -->
+<!-- ========================================= -->
 
-<section id="landingPage">
+<section id="landingPage" class="landing-page">
 
-<nav class="navbar">
+    <!-- NAVBAR -->
 
-<div class="logo-section">
+    <nav class="navbar">
 
-<img src="logo.gif" class="nav-logo">
+        <div class="logo-section">
 
-<div>
+            <img src="logo.gif" class="nav-logo" alt="Logo">
 
-<h2>AskAi</h2>
+            <div>
 
-<span>Your AI Companion</span>
+                <h2>AskAi</h2>
 
-</div>
+                <span>Your Personal AI Companion</span>
 
-</div>
+            </div>
 
-<div class="nav-buttons">
+        </div>
 
-<button id="themeBtn" class="theme-btn">
+        <div class="nav-buttons">
 
-🌙
+            <button id="themeBtn" class="theme-btn">
+                🌙
+            </button>
 
-</button>
+            <button id="loginBtn" class="login-btn">
+                Login
+            </button>
 
-<button class="login-btn">
+            <button id="startBtn"
+                    class="start-btn"
+                    onclick="startLoading()">
+                Get Started
+            </button>
 
-Login
+        </div>
 
-</button>
+    </nav>
 
-<button class="start-btn" onclick="startLoading()">
+    <!-- HERO -->
 
-Get Started
+    <div class="hero">
 
-</button>
+        <!-- LEFT -->
 
-</div>
+        <div class="hero-left">
 
-</nav>
+            <div class="badge">
 
-<div class="hero">
+                ✨ Powered by Artificial Intelligence
 
-<div class="hero-left">
+            </div>
 
-<div class="badge">
+            <h1>
 
-✨ Powered by Artificial Intelligence
+                Learn.<br>
 
-</div>
+                Create.<br>
 
-<h1>
+                Code.<br>
 
-Learn.
+                <span>Anything.</span>
 
-Create.
+            </h1>
 
-Code.
+            <p>
 
-<span>Anything.</span>
+                AskAi is your intelligent AI assistant that helps you:
 
-</h1>
+            </p>
 
-<p>
+            <ul class="hero-list">
 
-AskAi is your personal AI assistant that helps you study,
-write code, summarize PDFs, save notes, answer questions,
-and improve your productivity.
+                <li>📚 Study any subject</li>
 
-</p>
+                <li>💻 Write and debug code</li>
 
-<div class="hero-buttons">
+                <li>📄 Chat with PDF documents</li>
 
-<button class="primary-btn" onclick="startLoading()">
+                <li>📝 Summarize notes instantly</li>
 
-Start Chatting
+                <li>🎯 Prepare for interviews & exams</li>
 
-</button>
+                <li>🤖 Get instant AI assistance</li>
 
-<button class="secondary-btn">
+            </ul>
 
-Explore Features
+            <div class="hero-buttons">
 
-</button>
+                <button
+                    class="primary-btn"
+                    onclick="startLoading()">
 
-</div>
+                    🚀 Start Chatting
 
-<div class="hero-stats">
+                </button>
 
-<div class="stat">
+                <button
+                    class="secondary-btn">
 
-<h3>24/7</h3>
+                    Explore Features
 
-<p>Available</p>
+                </button>
 
-</div>
+            </div>
 
-<div class="stat">
+            <div class="hero-stats">
 
-<h3>100+</h3>
+                <div class="stat">
 
-<p>Languages</p>
+                    <h3>24/7</h3>
 
-</div>
+                    <p>Availability</p>
 
-<div class="stat">
+                </div>
 
-<h3>AI</h3>
+                <div class="stat">
 
-<p>Powered</p>
+                    <h3>100+</h3>
 
-</div>
+                    <p>Languages</p>
 
-</div>
+                </div>
 
-</div>
+                <div class="stat">
 
-<div class="hero-right">
+                    <h3>AI</h3>
 
-<div class="ai-circle">
+                    <p>Powered</p>
 
-<div class="orbit orbit1"></div>
+                </div>
 
-<div class="orbit orbit2"></div>
+            </div>
 
-<div class="orbit orbit3"></div>
+        </div>
 
-<div class="core"></div>
+        <!-- RIGHT -->
 
-</div>
+        <div class="hero-right">
 
-</div>
+            <div class="ai-circle">
 
-</div>
+                <div class="orbit orbit1"></div>
+
+                <div class="orbit orbit2"></div>
+
+                <div class="orbit orbit3"></div>
+
+                <div class="core"></div>
+
+            </div>
+
+        </div>
+
+    </div>
 
 </section>
 
-<!-- ===========================
-MAIN APPLICATION
-=========================== -->
+<!-- ========================================= -->
+<!-- MAIN APPLICATION STARTS HERE -->
+<!-- ========================================= -->
 
 <div id="app" class="app">
+    <!-- ========================================= -->
+<!-- SIDEBAR -->
+<!-- ========================================= -->
 
 <aside class="sidebar">
 
-<div>
+    <div class="sidebar-top">
 
-<div class="sidebar-header">
+        <!-- Logo -->
 
-<img src="logo.gif" class="sidebar-logo">
+        <div class="sidebar-header">
 
-<div>
+            <img src="logo.gif" class="sidebar-logo" alt="Logo">
 
-<h3>AskAi</h3>
+            <div>
 
-<span>v2.0</span>
+                <h3>AskAi</h3>
 
-</div>
+                <span>Version 2.0</span>
 
-</div>
+            </div>
 
-<button class="new-chat-btn" onclick="newChat()">
+        </div>
 
-➕ New Chat
+        <!-- New Chat -->
 
-</button>
+        <button
+            class="new-chat-btn"
+            onclick="newChat()">
 
-<div class="search-wrapper">
+            ➕ New Chat
 
-<input
-type="text"
-id="searchChat"
-placeholder="Search chats...">
+        </button>
 
-</div>
+        <!-- Search -->
 
-<nav class="menu">
+        <div class="search-wrapper">
 
-<div class="menu-title">
+            <input
+                type="text"
+                id="searchChat"
+                placeholder="Search chats...">
 
-Workspace
+        </div>
 
-</div>
+        <!-- Workspace -->
 
-<button class="menu-item active">
+        <nav class="menu">
 
-💬 AI Chat
+            <div class="menu-title">
 
-</button>
+                Workspace
 
-<button class="menu-item">
+            </div>
 
-📄 PDF Chat
+            <button class="menu-item active">
 
-</button>
+                💬 AI Chat
 
-<button class="menu-item">
+            </button>
 
-📝 Notes
+            <button class="menu-item">
 
-</button>
+                📄 PDF Chat
 
-<button class="menu-item">
+            </button>
 
-📊 Dashboard
+            <button class="menu-item">
 
-</button>
+                📝 Notes
 
-<button class="menu-item">
+            </button>
 
-⭐ Saved
+            <button class="menu-item">
 
-</button>
+                📊 Dashboard
 
-<button class="menu-item">
+            </button>
 
-📜 History
+            <button class="menu-item">
 
-</button>
+                ⭐ Saved
 
-</nav>
+            </button>
 
-<nav class="menu">
+            <button class="menu-item">
 
-<div class="menu-title">
+                📜 History
 
-Management
+            </button>
 
-</div>
+        </nav>
 
-<button class="menu-item">
+        <!-- Management -->
 
-⚙ Settings
+        <nav class="menu">
 
-</button>
+            <div class="menu-title">
 
-<button class="menu-item">
+                Management
 
-👤 Profile
+            </div>
 
-</button>
+            <button class="menu-item">
 
-<button class="menu-item admin-only">
+                👤 Profile
 
-🛠 Admin Panel
+            </button>
 
-</button>
+            <button class="menu-item">
 
-</nav>
+                ⚙ Settings
 
-<div class="recent-section">
+            </button>
 
-<h4>
+            <button class="menu-item admin-only">
 
-Recent Chats
+                🛠 Admin Panel
 
-</h4>
+            </button>
 
-<div id="recentChats">
+        </nav>
 
-</div>
+        <!-- Recent Chats -->
 
-</div>
+        <div class="recent-section">
 
-</div>
-<div class="sidebar-footer">
+            <h4>
 
-<div class="profile-card">
+                Recent Chats
 
-<div class="profile-avatar">
+            </h4>
 
-G
+            <div id="recentChats">
 
-</div>
+                <div class="empty-chat">
 
-<div class="profile-info">
+                    No recent chats
 
-<h4 id="userName">
+                </div>
 
-Guest User
+            </div>
 
-</h4>
+        </div>
 
-<p id="userEmail">
+    </div>
 
-guest@askai.ai
+    <!-- User -->
 
-</p>
+    <div class="sidebar-footer">
 
-</div>
+        <div class="profile-card">
 
-<button class="profile-menu">
+            <div class="profile-avatar">
 
-⋮
+                G
 
-</button>
+            </div>
 
-</div>
+            <div class="profile-info">
 
-</div>
+                <h4 id="userName">
+
+                    Guest User
+
+                </h4>
+
+                <p id="userEmail">
+
+                    guest@askai.ai
+
+                </p>
+
+            </div>
+
+            <button class="profile-menu">
+
+                ⋮
+
+            </button>
+
+        </div>
+
+    </div>
 
 </aside>
 
-<!-- ===========================
-MAIN CONTENT
-=========================== -->
+<!-- ========================================= -->
+<!-- MAIN CONTENT -->
+<!-- ========================================= -->
 
 <main class="main">
+    <!-- ========================================= -->
+<!-- TOP BAR -->
+<!-- ========================================= -->
 
 <header class="topbar">
 
-<div class="top-left">
+    <div class="top-left">
 
-<h2>
+        <h2>✨ AskAi</h2>
 
-✨ AskAi
+        <span>Your Personal AI Companion</span>
 
-</h2>
+    </div>
 
-<span>
+    <div class="top-right">
 
-Your Personal AI Companion
+        <!-- AI MODEL -->
 
-</span>
+        <select id="modelSelect">
 
-</div>
+            <option value="openai/gpt-4.1-mini" selected>
+                GPT-4.1 Mini
+            </option>
 
-<div class="top-right">
+            <option value="anthropic/claude-3.5-sonnet">
+                Claude 3.5 Sonnet
+            </option>
 
-<select id="modelSelect">
+            <option value="google/gemini-2.5-flash">
+                Gemini 2.5 Flash
+            </option>
 
-<option>GPT-4.1</option>
+        </select>
 
-<option>Claude</option>
+        <!-- FILE UPLOAD -->
 
-<option>Gemini</option>
+        <label class="upload-btn" title="Upload PDF, DOCX or TXT">
 
-</select>
+            📄
 
-<label class="upload-btn">
+            <input
+                type="file"
+                id="fileInput"
+                accept=".pdf,.docx,.txt"
+                hidden>
 
-📄
+        </label>
 
-<input
-type="file"
-id="fileInput"
-hidden>
+        <!-- THEME -->
 
-</label>
+        <button id="themeToggle">
 
-<button id="themeToggle">
+            🌙
 
-🌙
+        </button>
 
-</button>
-
-</div>
+    </div>
 
 </header>
 
-<!-- ===========================
-WELCOME
-=========================== -->
+<!-- ========================================= -->
+<!-- WELCOME SCREEN -->
+<!-- ========================================= -->
 
 <section
-id="welcomeScreen"
-class="welcome-screen">
+    id="welcomeScreen"
+    class="welcome-screen">
 
-<div class="welcome-content">
+    <div class="welcome-content">
 
-<h1>
+        <h1>
 
-What would you like to learn today?
+            What would you like to learn today?
 
-</h1>
+        </h1>
 
-<p>
+        <p>
 
-Code • Study • Write • Research • Brainstorm • PDF Analysis
+            Study • Code • Research • Write • Summarize • Chat with PDFs
 
-</p>
+        </p>
 
-<div class="quick-prompts">
+        <div class="quick-prompts">
 
-<button class="prompt-card">
+            <button class="prompt-card">
 
-💻 Help me code
+                💻 Help me write code
 
-</button>
+            </button>
 
-<button class="prompt-card">
+            <button class="prompt-card">
 
-📚 Explain a topic
+                📚 Explain a difficult topic
 
-</button>
+            </button>
 
-<button class="prompt-card">
+            <button class="prompt-card">
 
-📝 Summarize notes
+                📄 Summarize my document
 
-</button>
+            </button>
 
-<button class="prompt-card">
+            <button class="prompt-card">
 
-📄 Analyze PDF
+                🎯 Prepare interview questions
 
-</button>
+            </button>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
 </section>
 
-<!-- ===========================
-CHAT
-=========================== -->
+<!-- ========================================= -->
+<!-- CHAT SECTION -->
+<!-- ========================================= -->
 
 <section
-id="chatSection"
-class="chat-section">
+    id="chatSection"
+    class="chat-section">
 
-<div
-id="chatBox"
-class="chat-box">
+    <div
+        id="chatBox"
+        class="chat-box">
 
-</div>
+    </div>
 
-<div id="typingIndicator">
+    <!-- Typing Indicator -->
 
-<div class="typing-dot"></div>
+    <div
+        id="typingIndicator"
+        class="typing-indicator"
+        style="display:none;">
 
-<div class="typing-dot"></div>
+        <div class="typing-dot"></div>
 
-<div class="typing-dot"></div>
+        <div class="typing-dot"></div>
 
-<span>
+        <div class="typing-dot"></div>
 
-AskAi is thinking...
+        <span>
 
-</span>
+            AskAi is thinking...
 
-</div>
+        </span>
+
+    </div>
 
 </section>
-
-<!-- ===========================
-INPUT AREA
-=========================== -->
+<!-- ========================================= -->
+<!-- INPUT AREA -->
+<!-- ========================================= -->
 
 <div class="input-container">
 
-<div class="input-toolbar">
+    <!-- Toolbar -->
 
-<button>
+    <div class="input-toolbar">
 
-➕
+        <button title="Add">
+            ➕
+        </button>
 
-</button>
+        <button title="Emoji">
+            😊
+        </button>
 
-<button>
+        <button title="Attach">
+            📎
+        </button>
 
-😊
+        <button title="Notes">
+            📝
+        </button>
 
-</button>
+        <button title="PDF">
+            📄
+        </button>
 
-<button>
+    </div>
 
-📎
+    <!-- Input Box -->
 
-</button>
+    <div class="input-box">
 
-<button>
+        <textarea
+            id="topic"
+            rows="1"
+            placeholder="Message AskAi..."></textarea>
 
-📝
+        <button
+            id="voiceBtn"
+            class="icon-btn"
+            title="Voice">
 
-</button>
+            🎤
 
-<button>
+        </button>
 
-📄
+        <button
+            id="sendBtn"
+            class="send-btn"
+            title="Send">
 
-</button>
+            ➤
 
-</div>
+        </button>
 
-<div class="input-box">
+    </div>
 
-<textarea
+    <!-- Footer -->
 
-id="topic"
+    <div class="input-footer">
 
-rows="1"
+        AskAi may produce inaccurate information. Please verify important facts before relying on them.
 
-placeholder="Message AskAi...">
-
-</textarea>
-
-<button
-
-id="voiceBtn"
-
-class="icon-btn">
-
-🎤
-
-</button>
-
-<button
-
-id="sendBtn">
-
-➤
-
-</button>
-
-</div>
-
-<div class="input-footer">
-
-AskAi may produce inaccurate information. Please verify important facts.
-
-</div>
+    </div>
 
 </div>
 
 </main>
 
 </div>
+
+<!-- ========================= -->
+<!-- JAVASCRIPT -->
+<!-- ========================= -->
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
