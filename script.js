@@ -167,3 +167,62 @@ topic.addEventListener("input", function () {
     this.style.height = this.scrollHeight + "px";
 
 });
+// ===============================
+// START LOADING
+// ===============================
+
+function startLoading() {
+
+    const loadingScreen = document.getElementById("loadingScreen");
+    const landingPage = document.getElementById("landingPage");
+    const app = document.getElementById("app");
+
+    if (loadingScreen) {
+        loadingScreen.style.display = "flex";
+    }
+
+    setTimeout(() => {
+
+        if (loadingScreen) loadingScreen.style.display = "none";
+
+        if (landingPage) landingPage.style.display = "none";
+
+        if (app) app.style.display = "flex";
+
+    }, 1800);
+
+}
+
+// ===============================
+// NEW CHAT
+// ===============================
+
+function newChat() {
+
+    history = [];
+
+    chatBox.innerHTML = "";
+
+    welcomeScreen.style.display = "flex";
+
+    topic.value = "";
+
+    uploadedFileText = "";
+
+}
+
+// ===============================
+// THEME
+// ===============================
+
+const themeToggle = document.getElementById("themeToggle");
+
+if (themeToggle) {
+
+    themeToggle.addEventListener("click", () => {
+
+        document.body.classList.toggle("dark");
+
+    });
+
+}
