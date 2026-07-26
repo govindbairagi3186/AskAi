@@ -76,6 +76,44 @@ function startApp() {
 
 }
 
+function openExploreModal() {
+  const modal = document.getElementById("exploreModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+  }
+}
+
+function closeExploreModal() {
+  const modal = document.getElementById("exploreModal");
+  if (modal) {
+    modal.classList.add("hidden");
+    const message = document.getElementById("modalMessage");
+    if (message) message.textContent = "";
+  }
+}
+
+function handleExploreSubmit(event) {
+  event.preventDefault();
+
+  const name = document.getElementById("regName")?.value?.trim();
+  const email = document.getElementById("regEmail")?.value?.trim();
+  const message = document.getElementById("modalMessage");
+
+  if (!name || !email) {
+    if (message) {
+      message.textContent = "Please enter both your name and email.";
+    }
+    return;
+  }
+
+  if (message) {
+    message.textContent = `Thanks, ${name}! We’ll send updates to ${email}.`;
+  }
+
+  const form = document.getElementById("exploreForm");
+  if (form) form.reset();
+}
+
 // =========================
 // THEME SWITCH
 // =========================
