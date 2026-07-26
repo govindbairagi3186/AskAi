@@ -95,7 +95,7 @@ LANDING PAGE
           Get Started
         </button>
 
-        <button class="hero-btn secondary" onclick="startLoading()">
+        <button class="hero-btn secondary" onclick="openExploreModal()">
           Explore AI
         </button>
       </div>
@@ -108,6 +108,22 @@ LANDING PAGE
   </div>
 
 </section>
+
+<div id="exploreModal" class="modal hidden">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeExploreModal()" aria-label="Close">×</button>
+    <h2>Join AskAi</h2>
+    <p>Register to unlock your personal AI companion experience.</p>
+
+    <form id="exploreForm" onsubmit="handleExploreSubmit(event)">
+      <input type="text" id="regName" placeholder="Your name" required />
+      <input type="email" id="regEmail" placeholder="Your email" required />
+      <button type="submit" class="hero-btn">Register</button>
+    </form>
+
+    <p id="modalMessage" class="modal-message"></p>
+  </div>
+</div>
 
 <!-- =========================
 MAIN APP
