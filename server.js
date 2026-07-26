@@ -17,6 +17,17 @@ const mimeTypes = {
   '.txt': 'text/plain; charset=utf-8'
 };
 
+function buildFriendlyReply(topic) {
+  const trimmedTopic = (topic || '').trim();
+
+  if (!trimmedTopic) {
+    return 'I’m here and ready to help — what would you like to explore today?';
+  }
+
+  const shortTopic = trimmedTopic.replace(/\s+/g, ' ').slice(0, 90);
+  return `Absolutely — “${shortTopic}” is a great topic to explore. I can break it down in a simple, friendly way and make it feel easy to follow. If you want, I can explain it step by step, give examples, or turn it into a quick study guide.`;
+}
+
 function serveStatic(req, res, filePath) {
   fs.readFile(filePath, (err, content) => {
     if (err) {
@@ -48,7 +59,7 @@ const server = http.createServer((req, res) => {
         const data = JSON.parse(body || '{}');
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({
-          result: `Echo: ${data.topic || 'Hello from local server'}`
+          result: buildFriendlyReply(data.topic)
         }));
       } catch (error) {
         res.writeHead(400, { 'Content-Type': 'application/json; charset=utf-8' });
