@@ -234,10 +234,6 @@ if (SpeechRecognition && voiceBtn && topicInput) {
 // FILE UPLOAD
 // =========================
 
-// =========================
-// FILE UPLOAD
-// =========================
-
 if (fileInput) {
 
   fileInput.addEventListener(
@@ -253,12 +249,12 @@ if (fileInput) {
 
       // SHOW USER MESSAGE
       addUserMessage(
-        `📎 Uploaded: ${file.name}`
+        `📎 File ready: ${file.name}`
       );
 
       // SHOW ANALYZING
       addAIMessage(
-        "📂 Analyzing file..."
+        "📂 I’m analyzing your file and preparing the context..."
       );
 
       try {
@@ -319,7 +315,7 @@ if (fileInput) {
 
 📄 ${file.name}
 
-You can now ask questions about this file.`
+You can now ask me questions about it, and I’ll use the content to help.`
 
         );
 
@@ -334,7 +330,7 @@ You can now ask questions about this file.`
 
         addAIMessage(
 
-          "❌ Failed to analyze file."
+          "❌ I couldn’t analyze that file. Please try another one or check the format."
 
         );
 
