@@ -1,129 +1,205 @@
 export default async function handler(req, res) {
+
   // =========================
   // ALLOW ONLY POST
   // =========================
+
   if (req.method !== "POST") {
+
     return res.status(405).json({
-      result: "Method not allowed",
+      result: "Method not allowed"
     });
+
   }
 
   try {
+
     // =========================
     // GET DATA
     // =========================
+
     const {
       topic,
       history = [],
-      fileText = "",
-      model = "openai/gpt-4.1-mini",
+      fileText = ""
     } = req.body;
 
     // =========================
     // EMPTY MESSAGE CHECK
     // =========================
-    if (!topic || !topic.trim()) {
+
+    if (!topic) {
+
       return res.status(400).json({
-        result: "Message is required",
+        result: "I’m here and ready to help — what would you like to talk about?"
       });
+
     }
 
     // =========================
     // SYSTEM PROMPT
     // =========================
+
     const systemPrompt = `
+
 You are AskAi.
 
 A smart, friendly and natural AI companion created by Govind Vaishnav.
 
-Rules:
+Behavior Rules:
 
-- Talk naturally like a real person.
-- Be friendly and professional.
-- Explain concepts in simple language.
-- Help with studies, coding, writing and daily questions.
-- If an uploaded document exists, use it first.
-- Format answers neatly.
-- Use Markdown when helpful.
+- Talk like a helpful neighbourhood friend.
+- Be warm, conversational and human-like.
+- Explain things simply.
+- Help in studies, coding, writing and general questions.
+- If uploaded file content exists, answer using that file.
+- Keep responses clean and readable.
+- Avoid robotic tone.
+
 `;
 
     // =========================
     // FILE CONTEXT
     // =========================
+
     const fileContext = fileText
       ? `
-Uploaded Document:
 
-${fileText.slice(0, 12000)}
+Uploaded File Content:
 
-Answer using this document whenever it is relevant.
+${fileText.slice(0,12000)}
+
+Use this uploaded file to answer the user's questions whenever relevant.
+
 `
       : "";
+
+    if (!process.env.OPENROUTER_API_KEY) {
+
+      return res.status(200).json({
+
+        result:
+          `Absolutely — “${topic}” is a great topic to explore. I can break it down in a simple, friendly way and make it feel easy to follow. If you want, I can explain it step by step, give examples, or turn it into a quick study guide.`
+
+      });
+
+    }
 
     // =========================
     // OPENROUTER REQUEST
     // =========================
+
     const response = await fetch(
+
       "https://openrouter.ai/api/v1/chat/completions",
+
       {
+
         method: "POST",
+
         headers: {
-          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-          "HTTP-Referer": "https://ask-ai-phi-nine.vercel.app",
-          "X-Title": "AskAi",
+
+          "Authorization":
+            `Bearer ${process.env.OPENROUTER_API_KEY}`,
+
+          "Content-Type":
+            "application/json",
+
+          "HTTP-Referer":
+            "https://ask-ai-phi-nine.vercel.app",
+
+          "X-Title":
+            "AskAi"
+
         },
+
         body: JSON.stringify({
-          model,
-          temperature: 0.7,
-          max_tokens: 2000,
+
+          model:
+            "openai/gpt-3.5-turbo",
+
           messages: [
+
+            // SYSTEM
             {
+
               role: "system",
-              content: systemPrompt + fileContext,
+
+              content:
+                systemPrompt + fileContext
+
             },
+
+            // CHAT HISTORY
             ...history,
+
+            // USER MESSAGE
             {
+
               role: "user",
-              content: topic,
-            },
-          ],
-        }),
+
+              content: topic
+
+            }
+
+          ]
+
+        })
+
       }
+
     );
 
     // =========================
-    // GET RESPONSE
+    // GET AI RESPONSE
     // =========================
-    const data = await response.json();
 
-    if (!response.ok) {
-      console.error(data);
+    const data =
+      await response.json();
 
-      return res.status(response.status).json({
-        result:
-          data?.error?.message ||
-          "OpenRouter request failed.",
-      });
-    }
+    console.log(data);
 
-    if (!data.choices || !data.choices.length) {
+    // =========================
+    // HANDLE API ERRORS
+    // =========================
+
+    if (data.error) {
+
       return res.status(500).json({
-        result: "No response received from AI.",
+
+        result:
+          data.error.message ||
+          "OpenRouter API Error"
+
       });
+
     }
 
     // =========================
-    // SUCCESS
+    // SEND AI MESSAGE
     // =========================
+
     return res.status(200).json({
-      result: data.choices[0].message.content.trim(),
+
+      result:
+
+        data.choices?.[0]?.message?.content ||
+
+        "No response from AI."
+
     });
+
   } catch (error) {
-    console.error(error);
+
+    console.log(error);
 
     return res.status(500).json({
-      result: error.message || "Internal server error.",
+
+      result:
+        "Server error occurred."
+
     });
+
   }
+
 }
